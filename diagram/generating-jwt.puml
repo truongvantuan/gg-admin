@@ -1,0 +1,15 @@
+@startuml
+autonumber
+
+Client -> JwtAuthenticationTokenFilter : POST /admin/login \nwith username/password
+JwtAuthenticationTokenFilter -> JwtAuthenticationTokenFilter : check request has token
+JwtAuthenticationTokenFilter -> JwtAuthenticationController : if not, call generateAuthToken()\nwith /admin/login mapping
+JwtAuthenticationController -> AuthenticationManager : validate username/password\nwith authenticate()
+AuthenticationManager -> JwtUserDetailService : Load UserDetails\nwith username from Database
+JwtUserDetailService -> AuthenticationManager : Return UserDetails\nwith username/password
+AuthenticationManager -> JwtAuthenticationController : If user validate return True\nElse throws Exception
+JwtAuthenticationController -> JwTokenUtils : call GenerateToken(UserDetail) to generate a valid token
+JwTokenUtils -> JwtAuthenticationController : return Token string
+JwtAuthenticationController -> Client : return valid Token valid
+
+@enduml

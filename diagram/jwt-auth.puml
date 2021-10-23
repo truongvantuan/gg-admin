@@ -1,0 +1,10 @@
+@startuml
+autonumber
+Client -> Server : POST /authenticate with username, password
+Server -> Server : Validate username/password\nGenerate JWT token\n using secret key
+Server -> Client : Return JWT token
+||40||
+Client -> Server : GET /hello with JWT in header
+Server -> Server : Validate JWt using secret
+Server -> Client : Return the response
+@enduml

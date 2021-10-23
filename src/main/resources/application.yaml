@@ -1,0 +1,42 @@
+#common
+server:
+  port: 8080
+#jwt config
+jwt:
+  tokenHead: Bearer
+  tokenHeader: Authorization
+  secret: h68H6auu
+  expiration: 604800
+
+
+#spring boot config
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/gg
+    username: truongtuan
+    password:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  redis:
+    host: localhost # Redis server address
+    database: 0 # Redis database index (default is 0)
+    port: 6379 # Redis server connection port
+    password: # Redis server connection password (empty by default)
+    jedis:
+      pool:
+        max-active: 8 # The maximum number of connections in the connection pool (use a negative value to indicate that there is no limit)
+        max-wait: -1ms # The maximum blocking waiting time of the connection pool (use a negative value to indicate that there is no limit)
+        max-idle: 8 # The largest free connection in the connection pool
+        min-idle: 0 # The smallest idle connection in the connection pool
+    timeout: 3000ms # Connection timeout time (milliseconds)
+
+#custom redis key
+redis:
+  key:
+    prefix:
+      authCode: "portal:authCode:"
+    expire:
+      authCode: 120 # Verification code expiration time

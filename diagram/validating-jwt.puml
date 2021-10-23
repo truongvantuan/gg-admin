@@ -1,0 +1,12 @@
+@startuml
+autonumber
+Client -> JwtAuthenticationTokenFilter : GET /... with token
+JwtAuthenticationTokenFilter -> JwtAuthenticationTokenFilter : Check request has Token \n then extract Token
+JwtAuthenticationTokenFilter -> AdminService : load Admin using username \nby call getAdminByUsername()
+AdminService -> JwtAuthenticationTokenFilter : return Admin
+JwtAuthenticationTokenFilter -> JwtTokenUtils : validate Jwt Token
+JwtTokenUtils -> JwtAuthenticationTokenFilter : return True if Token valid
+JwtAuthenticationTokenFilter -> JwtAuthenticationTokenFilter : if token valid,\n config spring security for admin
+JwtAuthenticationTokenFilter -> Controller : method() with GET mapping called
+Controller -> Client : return response
+@enduml
