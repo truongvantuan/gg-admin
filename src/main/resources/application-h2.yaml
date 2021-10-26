@@ -1,4 +1,4 @@
-#common config
+#common
 server:
   port: 8080
 #jwt config
@@ -12,15 +12,16 @@ jwt:
 #spring boot config
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/gg
-#    url: jdbc:postgresql://localhost:5432/ggadmin
-    username: truongtuan
-    password:
+    username: sa
+    password: 123
+    url: jdbc:h2:mem:testgg;MODE=PostgreSQL;
+    driver-class-name: org.h2.Driver
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: validate
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
+
   redis:
     host: localhost # Redis server address
     database: 0 # Redis database index (default is 0)

@@ -1,6 +1,9 @@
 package ggadmin.model.ums;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -8,9 +11,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "admin", schema = "ums")
 public class Admin implements Serializable {
@@ -45,36 +50,34 @@ public class Admin implements Serializable {
     private String note;
 
     @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time")
     private Date createTime;
 
     @Column(name = "login_time")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date loginTime;
 
     @NotNull
     @Column(name = "status")
     private Integer status;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(
             name = "admin_role_relation",
+            schema = "ums",
             joinColumns = @JoinColumn(name = "admin_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles;
+    private List<Role> roles;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "admins")
-    private Set<Permission> permissions;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "admin_permission_relation",
+            schema = "ums",
+            joinColumns = @JoinColumn(name = "admin_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id")
+    )
+    private List<Permission> permissions;
 
-    public Set<Permission> getPermissions() {
-        return permissions;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
 }

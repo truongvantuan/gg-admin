@@ -3,7 +3,7 @@ package ggadmin.dto;
 import lombok.Data;
 
 @Data
-public class AdminLoginDto {
+public class AdminLoginDTO {
 
     private String username;
 

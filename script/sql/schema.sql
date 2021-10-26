@@ -1,0 +1,229 @@
+DROP TABLE IF EXISTS ums.admin;
+DROP TABLE IF EXISTS ums.role;
+DROP TABLE IF EXISTS ums.admin_role_relation;
+
+CREATE TABLE IF NOT EXISTS ums.admin
+(
+    id          BIGSERIAL                     NOT NULL,
+    username    TEXT,
+    password    TEXT,
+    email       TEXT,
+    icon        TEXT,
+    nick_name   TEXT,
+    note        TEXT,
+    create_time TIMESTAMP WITHOUT TIME ZONE   NOT NULL,
+    login_time  TIMESTAMP WITHOUT TIME ZONE   NOT NULL,
+    status      INT CHECK ( status IN (1, 2)) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+COMMENT ON COLUMN ums.admin.id IS 'ID';
+COMMENT ON COLUMN ums.admin.username IS 'Username to login';
+COMMENT ON COLUMN ums.admin.password IS 'Password to login';
+COMMENT ON COLUMN ums.admin.icon IS 'Front-end icon';
+COMMENT ON COLUMN ums.admin.nick_name IS 'Admins nickname';
+COMMENT ON COLUMN ums.admin.note IS 'Note about this account';
+COMMENT ON COLUMN ums.admin.create_time IS 'Created time';
+COMMENT ON COLUMN ums.admin.login_time IS 'Recently login time';
+
+INSERT INTO ums.admin
+VALUES ('1', 'test', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0YCVG',
+        'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180607/timg.jpg', NULL, 'Test account', NULL,
+        '2018-09-29 13:55:30', '2018-09-29 13:55:39', '1');
+INSERT INTO ums.admin
+VALUES ('3', 'admin', '$2a$10$.E1FokumK5GIXWgKlg.Hc.i/0/2.qdAwYFL1zc5QHdyzpXOr38RZO',
+        'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20190129/170157_yIl3_1767531.jpg', 'admin@163.com',
+        'System administrator', 'System administrator', '2018-10-08 13:32:47', '2019-03-20 15:38:50', '1');
+
+
+-- ALTER TABLE ums.admin
+--     ALTER COLUMN status SET NOT NULL;
+-- ALTER TABLE ums.admin
+--     ADD COLUMN email TEXT NOT NULL;
+
+/**
+  ums.role
+ */
+CREATE TABLE IF NOT EXISTS ums.role
+(
+    id          BIGSERIAL                               NOT NULL,
+    name        TEXT                                    NOT NULL,
+    description TEXT,
+    admin_count INT                                     NOT NULL,
+    create_time TIMESTAMP WITHOUT TIME ZONE             NOT NULL,
+    status      INT DEFAULT 1 CHECK ( status IN (0, 1)) NOT NULL,
+    sort        INT DEFAULT 0,
+    PRIMARY KEY (id)
+);
+COMMENT ON COLUMN ums.role.id IS 'ID';
+COMMENT ON COLUMN ums.role.name IS 'tên role';
+COMMENT ON COLUMN ums.role.description IS 'mô tả về role';
+COMMENT ON COLUMN ums.role.admin_count IS 'số admin thuộc về role';
+COMMENT ON COLUMN ums.role.create_time IS 'thời điểm tạo ra role';
+COMMENT ON COLUMN ums.role.status IS 'trạng thái của role 1 -> kích hoạt, 0 -> vô hiệu hóa';
+COMMENT ON COLUMN ums.role.sort IS 'thứ tự sắp xếp role';
+
+INSERT INTO ums.role
+VALUES ('1', 'Product manager', 'Product manager', '0', '2018-09-30 15:46:11', '1', '0');
+INSERT INTO ums.role
+VALUES ('2', 'Product type manager', 'Product type manager', '0', '2018-09-30 15:53:45', '1', '0');
+INSERT INTO ums.role
+VALUES ('3', 'Categories manager', 'Categories manager', '0', '2018-09-30 15:53:56', '1', '0');
+INSERT INTO ums.role
+VALUES ('4', 'Brand manager', 'Brand manager', '0', '2018-09-30 15:54:12', '1', '0');
+
+/**
+  admin_role_relation
+ */
+CREATE TABLE IF NOT EXISTS ums.admin_role_relation
+(
+    admin_id BIGINT NOT NULL REFERENCES ums.admin (id),
+    role_id  BIGINT NOT NULL REFERENCES ums.role (id),
+    PRIMARY KEY (admin_id, role_id)
+);
+COMMENT ON COLUMN ums.admin_role_relation.role_id IS 'id của role';
+COMMENT ON COLUMN ums.admin_role_relation.admin_id IS 'id của admin';
+INSERT INTO ums.admin_role_relation
+VALUES (3, 1);
+INSERT INTO ums.admin_role_relation
+VALUES (3, 2);
+INSERT INTO ums.admin_role_relation
+VALUES (3, 3);
+INSERT INTO ums.admin_role_relation
+VALUES (3, 4);
+INSERT INTO ums.admin_role_relation
+VALUES (1, 1);
+INSERT INTO ums.admin_role_relation
+VALUES (1, 2);
+
+
+
+DROP TABLE IF EXISTS ums.permission;
+CREATE TABLE IF NOT EXISTS ums.permission
+(
+    id          BIGSERIAL                                NOT NULL,
+    pid         BIGINT REFERENCES ums.permission (id),
+    name        TEXT                           DEFAULT NULL,
+    value       TEXT                           DEFAULT NULL,
+    icon        TEXT                           DEFAULT NULL,
+    type        INT CHECK ( type IN (0, 1, 2)) DEFAULT NULL,
+    uri         TEXT                           DEFAULT NULL,
+    status      INT CHECK ( status IN (0, 1) ) DEFAULT 1 NOT NULL,
+    create_time TIMESTAMP                                NOT NULL,
+    sort        INT                            DEFAULT NULL,
+    PRIMARY KEY (id)
+);
+COMMENT ON COLUMN ums.permission.id IS 'ID';
+COMMENT ON COLUMN ums.permission.pid IS 'id của permission mẹ';
+COMMENT ON COLUMN ums.permission.name IS 'tên';
+COMMENT ON COLUMN ums.permission.value IS 'giá trị';
+COMMENT ON COLUMN ums.permission.icon IS 'icon hiển thị';
+COMMENT ON COLUMN ums.permission.type IS 'kiểu, 0->directory, 1->menu, 2->button';
+COMMENT ON COLUMN ums.permission.uri IS 'resource path';
+COMMENT ON COLUMN ums.permission.status IS 'trạng thái';
+COMMENT ON COLUMN ums.permission.create_time IS 'thời điểm được tạo';
+COMMENT ON COLUMN ums.permission.sort IS 'thứ tự sắp xếp';
+
+INSERT INTO ums.permission
+VALUES ('1', '1', 'Product', NULL, NULL, '0', NULL, '1', '2018-09-29 16:15:14', '0');
+INSERT INTO ums.permission
+VALUES ('2', '1', 'Product list', 'pms:product:read', NULL, '1', '/pms/product/index', '1', '2018-09-29 16:17:01', '0');
+INSERT INTO ums.permission
+VALUES ('3', '1', 'Adding product', 'pms:product:create', NULL, '1', '/pms/product/add', '1', '2018-09-29 16:18:51',
+        '0');
+INSERT INTO ums.permission
+VALUES ('4', '1', 'Categories', 'pms:productCategory:read', NULL, '1', '/pms/productCate/index', '1',
+        '2018-09-29 16:23:07', '0');
+INSERT INTO ums.permission
+VALUES ('5', '1', 'Product Types', 'pms:productAttribute:read', NULL, '1', '/pms/productAttr/index', '1',
+        '2018-09-29 16:24:43', '0');
+INSERT INTO ums.permission
+VALUES ('6', '1', 'Brand management', 'pms:brand:read', NULL, '1', '/pms/brand/index', '1', '2018-09-29 16:25:45', '0');
+INSERT INTO ums.permission
+VALUES ('7', '2', 'Edit product', 'pms:product:update', NULL, '2', '/pms/product/updateProduct', '1',
+        '2018-09-29 16:34:23', '0');
+INSERT INTO ums.permission
+VALUES ('8', '2', 'Delete product', 'pms:product:delete', NULL, '2', '/pms/product/delete', '1', '2018-09-29 16:38:33',
+        '0');
+INSERT INTO ums.permission
+VALUES ('9', '4', 'Add product category', 'pms:productCategory:create', NULL, '2', '/pms/productCate/create', '1',
+        '2018-09-29 16:43:23', '0');
+INSERT INTO ums.permission
+VALUES ('10', '4', 'Modify product category', 'pms:productCategory:update', NULL, '2', '/pms/productCate/update', '1',
+        '2018-09-29 16:43:55', '0');
+INSERT INTO ums.permission
+VALUES ('11', '4', 'Delete product category', 'pms:productCategory:delete', NULL, '2', '/pms/productAttr/delete', '1',
+        '2018-09-29 16:44:38', '0');
+INSERT INTO ums.permission
+VALUES ('12', '5', 'Add product type', 'pms:productAttribute:create', NULL, '2', '/pms/productAttr/create', '1',
+        '2018-09-29 16:45:25', '0');
+INSERT INTO ums.permission
+VALUES ('13', '5', 'Modify product type', 'pms:productAttribute:update', NULL, '2', '/pms/productAttr/update', '1',
+        '2018-09-29 16:48:08', '0');
+INSERT INTO ums.permission
+VALUES ('14', '5', 'Delete product type', 'pms:productAttribute:delete', NULL, '2', '/pms/productAttr/delete', '1',
+        '2018-09-29 16:48:44', '0');
+INSERT INTO ums.permission
+VALUES ('15', '6', 'Add brand', 'pms:brand:create', NULL, '2', '/pms/brand/add', '1', '2018-09-29 16:49:34', '0');
+INSERT INTO ums.permission
+VALUES ('16', '6', 'Modify brand', 'pms:brand:update', NULL, '2', '/pms/brand/update', '1', '2018-09-29 16:50:55', '0');
+INSERT INTO ums.permission
+VALUES ('17', '6', 'Delete brand', 'pms:brand:delete', NULL, '2', '/pms/brand/delete', '1', '2018-09-29 16:50:59', '0');
+INSERT INTO ums.permission
+VALUES ('18', '1', 'Home page', NULL, NULL, '0', NULL, '1', '2018-09-29 16:51:57', '0');
+
+
+DROP TABLE IF EXISTS ums.permission_role_relation;
+CREATE TABLE IF NOT EXISTS ums.permission_role_relation
+(
+    role_id       BIGINT REFERENCES ums.role (id),
+    permission_id BIGINT REFERENCES ums.permission (id),
+    PRIMARY KEY (permission_id, role_id)
+);
+-- đổi tên table
+ALTER TABLE ums.permission_role_relation
+    RENAME TO role_permission_relation;
+
+INSERT INTO ums.permission_role_relation
+VALUES ('1', '2');
+INSERT INTO ums.permission_role_relation
+VALUES ('1', '7');
+INSERT INTO ums.permission_role_relation
+VALUES ('1', '8');
+INSERT INTO ums.permission_role_relation
+VALUES ('1', '1');
+INSERT INTO ums.permission_role_relation
+VALUES ('1', '3');
+INSERT INTO ums.permission_role_relation
+VALUES ('2', '4');
+INSERT INTO ums.permission_role_relation
+VALUES ('2', '9');
+INSERT INTO ums.permission_role_relation
+VALUES ('2', '10');
+INSERT INTO ums.permission_role_relation
+VALUES ('2', '11');
+INSERT INTO ums.permission_role_relation
+VALUES ('3', '5');
+INSERT INTO ums.permission_role_relation
+VALUES ('3', '12');
+INSERT INTO ums.permission_role_relation
+VALUES ('3', '13');
+INSERT INTO ums.permission_role_relation
+VALUES ('3', '14');
+INSERT INTO ums.permission_role_relation
+VALUES ('4', '6');
+INSERT INTO ums.permission_role_relation
+VALUES ('4', '15');
+INSERT INTO ums.permission_role_relation
+VALUES ('4', '16');
+INSERT INTO ums.permission_role_relation
+VALUES ('4', '17');
+
+CREATE TABLE IF NOT EXISTS ums.admin_permission_relation
+(
+    admin_id      BIGINT DEFAULT NULL REFERENCES ums.admin (id),
+    permission_id BIGINT DEFAULT NULL REFERENCES ums.permission (id),
+    type          INT    DEFAULT NULL,
+    PRIMARY KEY (admin_id, permission_id)
+);
+COMMENT ON TABLE ums.admin_permission_relation IS 'tùy chỉnh quyền admin tùy ý không thông qua role';

@@ -1,8 +1,9 @@
 package ggadmin.controller.ums;
 
 import ggadmin.common.api.CommonResult;
-import ggadmin.dto.AdminDto;
-import ggadmin.dto.AdminLoginDto;
+import ggadmin.dto.AdminDTO;
+import ggadmin.dto.AdminLoginDTO;
+import ggadmin.dto.PermissionDTO;
 import ggadmin.model.ums.Admin;
 import ggadmin.model.ums.Permission;
 import ggadmin.service.ums.AdminService;
@@ -12,13 +13,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Valid
 @Api(tags = "AdminController", consumes = "Admin controller, register, login")
@@ -40,7 +41,7 @@ public class AdminController {
     @PostMapping("/register")
     @ResponseBody
     public ResponseEntity<?> register(@RequestBody
-                                      @Validated AdminDto adminDto, BindingResult bindingResult) {
+                                      @Valid AdminDTO adminDto, BindingResult bindingResult) {
         Admin admin = adminService.register(adminDto);
         if (admin == null) {
             return CommonResult.failed();
@@ -50,7 +51,7 @@ public class AdminController {
 
     @PostMapping("/login")
     @ResponseBody
-    public ResponseEntity<?> login(@RequestBody AdminLoginDto adminLoginDto, BindingResult bindingResult) {
+    public ResponseEntity<?> login(@RequestBody AdminLoginDTO adminLoginDto, BindingResult bindingResult) {
         String token = adminService.login(adminLoginDto.getUsername(), adminLoginDto.getPassword());
         if (token == null) {
             return CommonResult.failed("Wrong username or password!");

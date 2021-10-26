@@ -1,6 +1,9 @@
 package ggadmin.model.ums;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -10,8 +13,10 @@ import java.util.List;
 import java.util.Set;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "role")
+@Table(name = "role", schema = "ums")
 public class Role implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -32,6 +37,7 @@ public class Role implements Serializable {
     private Integer adminCount;
 
     @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time")
     private Date createTime;
 
@@ -43,13 +49,15 @@ public class Role implements Serializable {
     private Integer sort;
 
     @ManyToMany(mappedBy = "roles")
-    private Set<Admin> admins;
+    @JsonIgnore
+    private List<Admin> admins;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_permission_relation",
-            joinColumns = @JoinColumn(name ="role_id"),
+            schema = "ums",
+            joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
-    private Set<Permission> permissions;
+    private List<Permission> permissions;
 
 }

@@ -6,20 +6,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminDto {
+public class AdminDTO {
 
     @NotNull
+    @NotEmpty
     private String username;
 
     @NotNull
+    @NotEmpty
     private String password;
 
     @Email
+    @NotEmpty
+    @NotNull
     private String email;
 
     public Admin toAdmin() {

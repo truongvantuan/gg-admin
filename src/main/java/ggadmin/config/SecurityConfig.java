@@ -4,6 +4,7 @@ import ggadmin.component.JwtAuthenticationTokenFilter;
 import ggadmin.component.RestAuthenticationEntryPoint;
 import ggadmin.component.RestfulAccessDeniedHandler;
 import ggadmin.dto.AdminUserDetails;
+import ggadmin.dto.PermissionDTO;
 import ggadmin.model.ums.Admin;
 import ggadmin.model.ums.Permission;
 import ggadmin.service.ums.AdminService;
@@ -25,6 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.List;
+import java.util.Set;
 
 @Configuration
 @EnableWebSecurity

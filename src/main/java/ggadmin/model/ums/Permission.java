@@ -1,6 +1,9 @@
 package ggadmin.model.ums;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,8 +11,17 @@ import java.util.Date;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "permission")
+@Table(name = "permission", schema = "ums")
+@NamedNativeQueries(
+        @NamedNativeQuery(
+                name = "getPermissionsByAdminId",
+                query = "SELECT P.* FROM ums.admin_role_relation ar LEFT JOIN ums.role r ON ar.role_id = r.ID LEFT JOIN ums.role_permission_relation rp ON r.ID = rp.role_id LEFT JOIN ums.permission P ON rp.permission_id = P.ID WHERE ar.admin_id = ?1 AND P.ID IS NOT NULL AND P.ID NOT IN ( SELECT P.ID FROM ums.admin_permission_relation pr LEFT JOIN ums.permission P ON pr.permission_id = P.ID WHERE pr.TYPE = - 1 AND pr.admin_id = ?1) UNION SELECT P.* FROM ums.admin_permission_relation pr LEFT JOIN ums.permission P ON pr.permission_id = P.ID WHERE pr.TYPE = 1 AND pr.admin_id = ?1",
+                resultClass = Permission.class
+        )
+)
 public class Permission implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -31,24 +43,26 @@ public class Permission implements Serializable {
     private String icon;
 
     @Column(name = "type", nullable = false)
-    private Long type;
+    private Integer type;
 
     @Column(name = "uri")
     private String uri;
 
     @Column(name = "status", nullable = false)
-    private Long status;
+    private Integer status;
 
     @Column(name = "create_time", nullable = false)
     private Date createTime;
 
     @Column(name = "sort")
-    private Long sort;
+    private Integer sort;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "permissions")
+    @JsonIgnore
     private List<Admin> admins;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "permissions")
+    @JsonIgnore
     private List<Role> roles;
 
 }

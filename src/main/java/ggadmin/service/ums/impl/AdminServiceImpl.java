@@ -1,11 +1,12 @@
 package ggadmin.service.ums.impl;
 
 import ggadmin.common.utils.JwtTokenUtil;
-import ggadmin.dto.AdminDto;
+import ggadmin.dto.AdminDTO;
 import ggadmin.dto.AdminUserDetails;
 import ggadmin.model.ums.Admin;
 import ggadmin.model.ums.Permission;
 import ggadmin.repository.ums.AdminRepository;
+import ggadmin.repository.ums.PermissionRepository;
 import ggadmin.service.ums.AdminService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +37,8 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private AdminRepository adminRepository;
     @Autowired
+    private PermissionRepository permissionRepository;
+    @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -53,7 +56,7 @@ public class AdminServiceImpl implements AdminService {
         // 2. Convert/Wrap admin to AdminUserDetails object and return it.
         Optional<Admin> adminOptional = adminRepository.getAdminByUsername(username);
         if (adminOptional.isEmpty()) {
-            throw new UsernameNotFoundException("username not found");
+            throw new UsernameNotFoundException("Admin with usernam,e not found");
         }
         Admin admin = adminOptional.get();
         List<Permission> permissions = getPermissions(admin.getId());
@@ -61,7 +64,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Admin register(AdminDto adminDto) {
+    public Admin register(AdminDTO adminDto) {
         if (adminRepository.getAdminByUsername(adminDto.getUsername()).isPresent()) {
             throw new RuntimeException("Người dùng đã được đăng ký!");
         }
@@ -93,7 +96,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<Permission> getPermissions(Long adminId) {
-        return adminRepository.getPermissionsByAdminId(adminId);
+        return permissionRepository.getPermissionsByAdminId(adminId);
     }
 
 }
