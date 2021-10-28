@@ -3,7 +3,6 @@ package ggadmin.controller.ums;
 import ggadmin.common.api.CommonResult;
 import ggadmin.dto.AdminDTO;
 import ggadmin.dto.AdminLoginDTO;
-import ggadmin.dto.PermissionDTO;
 import ggadmin.model.ums.Admin;
 import ggadmin.model.ums.Permission;
 import ggadmin.service.ums.AdminService;
@@ -19,9 +18,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-@Valid
 @Api(tags = "AdminController", consumes = "Admin controller, register, login")
 @Controller
 @RequestMapping("/admin")
@@ -37,7 +34,7 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-    @ApiOperation(value = "Đăng ký admin account")
+    @ApiOperation(value = "Đăng ký tài khoản admin")
     @PostMapping("/register")
     @ResponseBody
     public ResponseEntity<?> register(@RequestBody
@@ -49,6 +46,7 @@ public class AdminController {
         return CommonResult.success(admin, "Registry account successfully!");
     }
 
+    @ApiOperation(value = "Đăng nhập tài khoản admin dùng username/password")
     @PostMapping("/login")
     @ResponseBody
     public ResponseEntity<?> login(@RequestBody AdminLoginDTO adminLoginDto, BindingResult bindingResult) {

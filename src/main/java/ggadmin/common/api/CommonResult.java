@@ -15,16 +15,15 @@ public class CommonResult<T> {
         this.data = data;
     }
 
-    public static <T> ResponseEntity<?> success(T data, String message) {
-        Map<String, Object> dataMap = prepareResult(data, message);
-        return ResponseEntity.ok().body(dataMap);
-    }
-
     public static <T> ResponseEntity<?> success(T data) {
         Map<String, Object> dataMap = prepareResult(data, ResponseMessage.SUCCESS.getMessage());
         return ResponseEntity.ok().body(dataMap);
     }
 
+    public static <T> ResponseEntity<?> success(T data, String message) {
+        Map<String, Object> dataMap = prepareResult(data, message);
+        return ResponseEntity.ok().body(dataMap);
+    }
 
     public static ResponseEntity<?> failed(String message) {
         Map<String, Object> dataMap = prepareResult(null, message);

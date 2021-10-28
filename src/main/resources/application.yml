@@ -41,3 +41,8 @@ redis:
       authCode: "portal:authCode:"
     expire:
       authCode: 120 # Verification code expiration time
+
+#exception message
+data:
+  exception:
+    user_exist: Admin đã được đăng ký!

@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Filters lọc tất các các request trước khi xác thực username/password,
+ * Filter giúp lọc tất các các request trước khi xác thực username/password,
  * if jwt's token is in the request and valid,
  * remove the user name from token and call Spring's Security API for login.
  */
@@ -34,16 +34,16 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     private JwtTokenUtil jwtTokenUtil;
 
     @Value("${jwt.tokenHeader}")
-    private String tokenHeader;
+    private String tokenHeader; // Authorization
 
     @Value("${jwt.tokenHead}")
-    private String tokenHead;
+    private String tokenHead; // Bearer
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        String authHeader = request.getHeader(this.tokenHeader); // lấy nội dung attribute Authorization
+        String authHeader = request.getHeader(this.tokenHeader); // lấy nội dung từ Authorization
         if (authHeader != null && authHeader.startsWith(tokenHead)) { // kiểm tra RequestHeader chứa token Bearer
             String authToken = authHeader.substring(tokenHead.length()); // trích xuất Token từ authHeader
             String username = jwtTokenUtil.getUserFromToken(authToken); // trích xuất username từ Token
@@ -54,7 +54,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                     UsernamePasswordAuthenticationToken authenticationToken =
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    LOGGER.info("authenticated user:{}", username);
+                    LOGGER.info("Authenticated user: {}", username);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
             }

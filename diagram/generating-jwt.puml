@@ -3,13 +3,13 @@ autonumber
 
 Client -> JwtAuthenticationTokenFilter : POST /admin/login \nwith username/password
 JwtAuthenticationTokenFilter -> JwtAuthenticationTokenFilter : check request has token
-JwtAuthenticationTokenFilter -> JwtAuthenticationController : if not, call generateAuthToken()\nwith /admin/login mapping
-JwtAuthenticationController -> AuthenticationManager : validate username/password\nwith authenticate()
-AuthenticationManager -> JwtUserDetailService : Load UserDetails\nwith username from Database
-JwtUserDetailService -> AuthenticationManager : Return UserDetails\nwith username/password
-AuthenticationManager -> JwtAuthenticationController : If user validate return True\nElse throws Exception
-JwtAuthenticationController -> JwTokenUtils : call GenerateToken(UserDetail) to generate a valid token
-JwTokenUtils -> JwtAuthenticationController : return Token string
-JwtAuthenticationController -> Client : return valid Token valid
+JwtAuthenticationTokenFilter -> AdminController : if not, call method login()\nwith /admin/login mapping
+AdminController -> AdminService : validate username/password\nwith authenticate()
+AdminService -> AdminRepository : Load UserDetails(AdminUserDetails)\nwith username from Database
+AdminRepository -> AdminService : Return UserDetails(AdminUserDetails)\nwith username/password
+AdminService -> AdminController : If user validate return True\nElse throws Exception
+AdminController -> JwtTokenUtil : call generateToken(UserDetails) to generate a valid token
+JwtTokenUtil -> AdminController : return Token string
+AdminController -> Client : return valid Token valid
 
 @enduml

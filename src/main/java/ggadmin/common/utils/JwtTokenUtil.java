@@ -55,10 +55,6 @@ public class JwtTokenUtil {
         return generateToken(claims);
     }
 
-    private Date generateExpirationDate() {
-        return new Date(System.currentTimeMillis() + expiration * 1000);
-    }
-
     private Claims getClaimsFromToken(String token) {
         Claims claims = null;
 //        claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
@@ -92,6 +88,10 @@ public class JwtTokenUtil {
     public boolean isTokeExpired(String token) {
         Date expiredDate = getExpiredDateFromToken(token);
         return expiredDate.before(new Date());
+    }
+
+    private Date generateExpirationDate() {
+        return new Date(System.currentTimeMillis() + expiration * 1000);
     }
 
     public Date getExpiredDateFromToken(String token) {

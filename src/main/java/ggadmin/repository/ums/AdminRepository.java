@@ -2,7 +2,6 @@ package ggadmin.repository.ums;
 
 import ggadmin.dto.PermissionDTO;
 import ggadmin.model.ums.Admin;
-import ggadmin.model.ums.Permission;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -10,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 
 public interface AdminRepository extends CrudRepository<Admin, Long>, JpaSpecificationExecutor<Admin> {

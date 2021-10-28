@@ -3,6 +3,7 @@ package ggadmin.service.ums.impl;
 import ggadmin.common.utils.JwtTokenUtil;
 import ggadmin.dto.AdminDTO;
 import ggadmin.dto.AdminUserDetails;
+import ggadmin.exception.ums.AdminExistException;
 import ggadmin.model.ums.Admin;
 import ggadmin.model.ums.Permission;
 import ggadmin.repository.ums.AdminRepository;
@@ -51,12 +52,12 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // 1.Load admin from database, if not found throw exception UsernameNotFoundException
+    public UserDetails loadUserByUsername(String username) {
+        // 1. Load admin from database, if not found throw exception UsernameNotFoundException
         // 2. Convert/Wrap admin to AdminUserDetails object and return it.
         Optional<Admin> adminOptional = adminRepository.getAdminByUsername(username);
         if (adminOptional.isEmpty()) {
-            throw new UsernameNotFoundException("Admin with usernam,e not found");
+            throw new UsernameNotFoundException("Admin with username: " + username + " not found!");
         }
         Admin admin = adminOptional.get();
         List<Permission> permissions = getPermissions(admin.getId());
@@ -66,7 +67,8 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Admin register(AdminDTO adminDto) {
         if (adminRepository.getAdminByUsername(adminDto.getUsername()).isPresent()) {
-            throw new RuntimeException("Người dùng đã được đăng ký!");
+            throw new AdminExistException();
+//            throw new RuntimeException("Người dùng đã được đăng ký!");
         }
         Admin admin = adminDto.toAdmin();
         admin.setCreateTime(new Date());
