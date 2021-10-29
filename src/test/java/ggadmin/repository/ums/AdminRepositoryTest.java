@@ -1,13 +1,12 @@
 package ggadmin.repository.ums;
 
 import ggadmin.dto.PermissionDTO;
-import ggadmin.model.ums.Permission;
+import ggadmin.model.ums.Admin;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,16 +14,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AdminRepositoryTest {
 
     @Autowired
-    PermissionDAO permissionDAO;
-    @Autowired
     AdminRepository adminRepository;
 
     @Test
-    void test() {
-        List<PermissionDTO> permissions = adminRepository.getPermissionsByAdminId(1L);
-        assertThat(permissions).isNotEmpty();
-        for (PermissionDTO p : permissions) {
-            System.out.println(p.toString());
+    void selectAdminTest() {
+        List<Admin> adminList = adminRepository.selectAllAdmin();
+        for (Admin ad : adminList) {
+            System.out.println(ad.toString());
         }
     }
 }

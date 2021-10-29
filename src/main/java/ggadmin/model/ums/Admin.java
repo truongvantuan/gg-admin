@@ -1,9 +1,9 @@
 package ggadmin.model.ums;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -11,9 +11,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -62,14 +63,15 @@ public class Admin implements Serializable {
     @Column(name = "status")
     private Integer status;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(
             name = "admin_role_relation",
             schema = "ums",
             joinColumns = @JoinColumn(name = "admin_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private List<Role> roles;
+//    @Fetch(value = FetchMode.SELECT)
+    private Set<Role> roles;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -78,6 +80,24 @@ public class Admin implements Serializable {
             joinColumns = @JoinColumn(name = "admin_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
-    private List<Permission> permissions;
+//    @Fetch(value = FetchMode.SELECT)
+    private Set<Permission> permissions;
 
+    @Override
+    public String toString() {
+        return "Admin{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", icon='" + icon + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", note='" + note + '\'' +
+                ", createTime=" + createTime +
+                ", loginTime=" + loginTime +
+                ", status=" + status +
+                ", roles=" + roles +
+                ", permissions=" + permissions +
+                '}';
+    }
 }

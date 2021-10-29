@@ -2,15 +2,17 @@ package ggadmin.model.ums;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -59,10 +61,10 @@ public class Permission implements Serializable {
 
     @ManyToMany(mappedBy = "permissions")
     @JsonIgnore
-    private List<Admin> admins;
+    private Set<Admin> admins;
 
     @ManyToMany(mappedBy = "permissions")
     @JsonIgnore
-    private List<Role> roles;
+    private Set<Role> roles;
 
 }
