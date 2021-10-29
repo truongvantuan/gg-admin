@@ -33,6 +33,12 @@ spring:
         max-idle: 8 # The largest free connection in the connection pool
         min-idle: 0 # The smallest idle connection in the connection pool
     timeout: 3000ms # Connection timeout time (milliseconds)
+#  data:
+#    elasticsearch:
+#      repositories:
+#        enabled: true
+#      cluster-nodes: 127.0.0.1:9300
+#      cluster-name: elasticsearch
 
 #custom redis key
 redis:
