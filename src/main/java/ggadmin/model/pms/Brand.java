@@ -1,15 +1,16 @@
 package ggadmin.model.pms;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "brand", schema = "pms")
 public class Brand implements Serializable {
@@ -17,7 +18,7 @@ public class Brand implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "name", nullable = false)
@@ -36,10 +37,10 @@ public class Brand implements Serializable {
     private Integer showStatus;
 
     @Column(name = "product_count", nullable = false)
-    private Long productCount;
+    private Integer productCount;
 
     @Column(name = "product_comment_count", nullable = false)
-    private Long productCommentCount;
+    private Integer productCommentCount;
 
     @Column(name = "logo")
     private String logo;
@@ -49,5 +50,12 @@ public class Brand implements Serializable {
 
     @Column(name = "brand_story")
     private String brandStory;
+
+    @OneToMany(
+            mappedBy = "brand",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    Collection<Product> productList = new ArrayList<>();
 
 }

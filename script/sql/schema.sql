@@ -26,6 +26,18 @@ COMMENT ON COLUMN ums.admin.note IS 'Note about this account';
 COMMENT ON COLUMN ums.admin.create_time IS 'Created time';
 COMMENT ON COLUMN ums.admin.login_time IS 'Recently login time';
 
+CREATE TABLE IF NOT EXISTS ums.admin_login_log
+(
+    id          BIGSERIAL NOT NULL,
+    admin_id    BIGINT REFERENCES ums.admin (id),
+    create_time TIMESTAMP WITHOUT TIME ZONE DEFAULT NULL,
+    ip          VARCHAR(64)                 DEFAULT NULL,
+    address     VARCHAR(100)                DEFAULT NULL,
+    user_agent  VARCHAR(100)                DEFAULT NULL
+);
+
+COMMENT ON TABLE ums.admin_login_log IS 'bảng lưu thông tin lịch sử đăng nhập';
+
 INSERT INTO ums.admin
 VALUES ('1', 'test', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0YCVG',
         'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180607/timg.jpg', NULL, 'Test account', NULL,
@@ -227,3 +239,92 @@ CREATE TABLE IF NOT EXISTS ums.admin_permission_relation
     PRIMARY KEY (admin_id, permission_id)
 );
 COMMENT ON TABLE ums.admin_permission_relation IS 'tùy chỉnh quyền admin tùy ý không thông qua role';
+
+DROP TABLE IF EXISTS pms.brand;
+CREATE TABLE IF NOT EXISTS pms.brand
+(
+    id                    BIGSERIAL           NOT NULL,
+    name                  VARCHAR(150) UNIQUE NOT NULL,
+    first_letter          VARCHAR(8)          NOT NULL,
+    sort                  INT                 NOT NULL,
+    factory_status        INT                 NOT NULL,
+    show_status           INT DEFAULT 1       NOT NULL,
+    product_count         INT DEFAULT 0       NOT NULL,
+    product_comment_count INT DEFAULT 0       NOT NULL,
+    logo                  TEXT,
+    big_pic               TEXT,
+    brand_story           TEXT,
+    PRIMARY KEY (id)
+);
+-- pms.product
+DROP TABLE IF EXISTS pms.product;
+CREATE TABLE IF NOT EXISTS pms.product
+(
+    id                    BIGSERIAL          NOT NULL,
+    name                  TEXT UNIQUE        NOT NULL,
+    product_sn            VARCHAR(50) UNIQUE NOT NULL,
+    picture               TEXT     DEFAULT NULL,
+    delete_status         SMALLINT DEFAULT 0 CHECK ( delete_status IN (0, 1) ),
+    publish_status        SMALLINT DEFAULT 1 CHECK ( publish_status IN (0, 1)),
+    new_status            SMALLINT DEFAULT 1 CHECK ( new_status IN (0, 1)),
+    recommended_status    SMALLINT CHECK ( recommended_status IN (0, 1) ),
+    verify_status         SMALLINT CHECK ( verify_status IN (0, 1)),
+    sort                  SMALLINT,
+    sale                  SMALLINT DEFAULT 0,
+    price                 NUMERIC(10, 2),
+    promotion_price       NUMERIC(10, 2),
+    gift_growth           SMALLINT,
+    gift_point            SMALLINT,
+    use_point_limit       SMALLINT,
+    subtitle              TEXT,
+    description           TEXT,
+    original_price        NUMERIC(10, 2),
+    stock                 SMALLINT,
+    low_stock             SMALLINT,
+    unit                  VARCHAR(16),
+    weight                NUMERIC(5, 2),
+    preview_status        SMALLINT DEFAULT 0 CHECK ( preview_status IN (0, 1)),
+    service_ids           VARCHAR(60),
+    keywords              VARCHAR(255),
+    note                  VARCHAR(255),
+    album_pics            VARCHAR(255),
+    detail_title          VARCHAR(255),
+    detail_desc           TEXT,
+    detail_html           TEXT,
+    detail_mobile_html    TEXT,
+    promotion_start_time  TIMESTAMP WITHOUT TIME ZONE,
+    promotion_end_time    TIMESTAMP WITHOUT TIME ZONE,
+    promotion_per_limit   SMALLINT,
+    promotion_type        SMALLINT,
+    product_category_name VARCHAR(255),
+    brand_name            VARCHAR(255),
+    PRIMARY KEY (id)
+);
+
+COMMENT ON TABLE pms.product IS 'product table';
+
+DROP TABLE IF EXISTS pms.category;
+CREATE TABLE IF NOT EXISTS pms.category
+(
+    id            BIGSERIAL          NOT NULL,
+    pid           BIGINT             NOT NULL DEFAULT NULL,
+    name          VARCHAR(64) UNIQUE NOT NULL,
+    level         SMALLINT                    DEFAULT NULL CHECK ( level IN (0, 1) ),
+    product_count SMALLINT                    DEFAULT NULL,
+    product_unit  SMALLINT                    DEFAULT NULL,
+    nav_status    SMALLINT CHECK ( nav_status IN (0, 1) ),
+    show_status   SMALLINT CHECK ( show_status IN (0, 1)),
+    sort          SMALLINT,
+    icon          VARCHAR(32),
+    keywords      TEXT,
+    description   TEXT,
+    PRIMARY KEY (id)
+);
+COMMENT ON TABLE pms.category IS 'bảng danh mục sản phẩm';
+COMMENT ON COLUMN pms.category.pid IS 'id của category mẹ, giá trị 0 là root_category';
+COMMENT ON COLUMN pms.category.name IS 'tên category';
+COMMENT ON COLUMN pms.category.level IS 'cấp bậc phân loại: 0->level1, 1->level2';
+COMMENT ON COLUMN pms.category.product_count IS 'số sản phẩm thuộc có';
+COMMENT ON COLUMN pms.category.product_unit IS 'đơn vị một sản phẩm';
+COMMENT ON COLUMN pms.category.nav_status IS 'trạng thái hiển thị trên navigation bar: 0->ẩn, 1->hiện';
+COMMENT ON COLUMN pms.category.show_status IS 'trạng thái hiển thị: 0->ẩn, 1->hiển thị';
