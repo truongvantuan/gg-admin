@@ -1,6 +1,7 @@
 package ggadmin.model.pms;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,8 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
-
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "brand", schema = "pms")
 public class Brand implements Serializable {
