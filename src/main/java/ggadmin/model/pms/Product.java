@@ -8,9 +8,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-/**
- * product table
- */
 @Getter
 @Setter
 @Entity
@@ -143,5 +140,8 @@ public class Product implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
+
+    @ManyToOne
+    private Category category;
 
 }
