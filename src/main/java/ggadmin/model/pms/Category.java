@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.*;
 
 @Getter
 @Setter
@@ -18,8 +19,8 @@ public class Category implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(name = "pid")
-    private Long pid;
+    /*@Column(name = "pid")
+    private Long pid;*/
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -51,21 +52,22 @@ public class Category implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @Override
-    public String toString() {
-        return "Category{" +
-                "id=" + id + '\'' +
-                "pid=" + pid + '\'' +
-                "name=" + name + '\'' +
-                "level=" + level + '\'' +
-                "productCount=" + productCount + '\'' +
-                "productUnit=" + productUnit + '\'' +
-                "navStatus=" + navStatus + '\'' +
-                "showStatus=" + showStatus + '\'' +
-                "sort=" + sort + '\'' +
-                "icon=" + icon + '\'' +
-                "keywords=" + keywords + '\'' +
-                "description=" + description + '\'' +
-                '}';
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pid")
+    private Category parentCategory;
+
+    /*@OneToMany
+    private Set<Category> subCategories = new HashSet<>();*/
+
+    @ManyToMany
+    @JoinTable(
+            name = "category_attribute_relation",
+            schema = "pms",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "attribute_id")
+    )
+    private Collection<Attribute> attributes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    private List<Product> productList = new ArrayList<>();
 }

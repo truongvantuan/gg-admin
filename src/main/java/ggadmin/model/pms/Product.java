@@ -20,12 +20,6 @@ public class Product implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "attribute_category_id")
-    private Long attributeCategoryId;
-
-    @Column(name = "category_id")
-    private Long categoryId;
-
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -141,7 +135,12 @@ public class Product implements Serializable {
     @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "attribute_category_id")
+    private AttributeCategory attributeCategory;
 
 }

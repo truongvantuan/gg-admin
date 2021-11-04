@@ -6,7 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
@@ -50,11 +50,10 @@ public class Brand implements Serializable {
     @Column(name = "brand_story")
     private String brandStory;
 
-    @OneToMany(
-            mappedBy = "brand",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
-    )
-    Collection<Product> productList = new ArrayList<>();
+    /**
+     * Tải Collection sử dụng Foreign Key được map bởi thuộc tính "brand" phía Product
+     */
+    @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY)
+    List<Product> productList = new ArrayList<>();
 
 }

@@ -5,6 +5,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Getter
 @Setter
@@ -17,9 +19,6 @@ public class Attribute implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-
-    @Column(name = "attribute_category_id")
-    private Long attributeCategoryId;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -51,23 +50,11 @@ public class Attribute implements Serializable {
     @Column(name = "type")
     private Integer type;
 
+    @ManyToMany(mappedBy = "attributes", fetch = FetchType.LAZY)
+    private Collection<Category> categories = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "attribute_category_id")
+    private AttributeCategory attributeCategory;
 
-    @Override
-    public String toString() {
-        return "Attribute{" +
-                "id=" + id + '\'' +
-                "attributeCategoryId=" + attributeCategoryId + '\'' +
-                "name=" + name + '\'' +
-                "selectType=" + selectType + '\'' +
-                "inputType=" + inputType + '\'' +
-                "inputList=" + inputList + '\'' +
-                "sort=" + sort + '\'' +
-                "filterType=" + filterType + '\'' +
-                "searchType=" + searchType + '\'' +
-                "relatedStatus=" + relatedStatus + '\'' +
-                "handAddStatus=" + handAddStatus + '\'' +
-                "type=" + type + '\'' +
-                '}';
-    }
 }
