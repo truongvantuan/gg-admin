@@ -185,50 +185,50 @@ INSERT INTO ums.permission
 VALUES ('18', '1', 'Home page', NULL, NULL, '0', NULL, '1', '2018-09-29 16:51:57', '0');
 
 
-DROP TABLE IF EXISTS ums.permission_role_relation;
-CREATE TABLE IF NOT EXISTS ums.permission_role_relation
+DROP TABLE IF EXISTS ums.role_permission_relation;
+CREATE TABLE IF NOT EXISTS ums.role_permission_relation
 (
     role_id       BIGINT REFERENCES ums.role (id),
     permission_id BIGINT REFERENCES ums.permission (id),
     PRIMARY KEY (permission_id, role_id)
 );
 -- đổi tên table
-ALTER TABLE ums.permission_role_relation
+ALTER TABLE ums.role_permission_relation
     RENAME TO role_permission_relation;
 
-INSERT INTO ums.permission_role_relation
+INSERT INTO ums.role_permission_relation
 VALUES ('1', '2');
-INSERT INTO ums.permission_role_relation
+INSERT INTO ums.role_permission_relation
 VALUES ('1', '7');
-INSERT INTO ums.permission_role_relation
+INSERT INTO ums.role_permission_relation
 VALUES ('1', '8');
-INSERT INTO ums.permission_role_relation
+INSERT INTO ums.role_permission_relation
 VALUES ('1', '1');
-INSERT INTO ums.permission_role_relation
+INSERT INTO ums.role_permission_relation
 VALUES ('1', '3');
-INSERT INTO ums.permission_role_relation
+INSERT INTO ums.role_permission_relation
 VALUES ('2', '4');
-INSERT INTO ums.permission_role_relation
+INSERT INTO ums.role_permission_relation
 VALUES ('2', '9');
-INSERT INTO ums.permission_role_relation
+INSERT INTO ums.role_permission_relation
 VALUES ('2', '10');
-INSERT INTO ums.permission_role_relation
+INSERT INTO ums.role_permission_relation
 VALUES ('2', '11');
-INSERT INTO ums.permission_role_relation
+INSERT INTO ums.role_permission_relation
 VALUES ('3', '5');
-INSERT INTO ums.permission_role_relation
+INSERT INTO ums.role_permission_relation
 VALUES ('3', '12');
-INSERT INTO ums.permission_role_relation
+INSERT INTO ums.role_permission_relation
 VALUES ('3', '13');
-INSERT INTO ums.permission_role_relation
+INSERT INTO ums.role_permission_relation
 VALUES ('3', '14');
-INSERT INTO ums.permission_role_relation
+INSERT INTO ums.role_permission_relation
 VALUES ('4', '6');
-INSERT INTO ums.permission_role_relation
+INSERT INTO ums.role_permission_relation
 VALUES ('4', '15');
-INSERT INTO ums.permission_role_relation
+INSERT INTO ums.role_permission_relation
 VALUES ('4', '16');
-INSERT INTO ums.permission_role_relation
+INSERT INTO ums.role_permission_relation
 VALUES ('4', '17');
 
 CREATE TABLE IF NOT EXISTS ums.admin_permission_relation
@@ -238,7 +238,7 @@ CREATE TABLE IF NOT EXISTS ums.admin_permission_relation
     type          INT    DEFAULT NULL,
     PRIMARY KEY (admin_id, permission_id)
 );
-COMMENT ON TABLE ums.admin_permission_relation IS 'tùy chỉnh quyền admin tùy ý không thông qua role';
+COMMENT ON TABLE ums.admin_permission_relation IS 'tùy chỉnh quyền admin riêng lẻ không thông qua bộ các permission nhóm bởi role';
 
 DROP TABLE IF EXISTS pms.brand;
 CREATE TABLE IF NOT EXISTS pms.brand

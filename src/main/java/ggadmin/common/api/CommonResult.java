@@ -5,6 +5,11 @@ import org.springframework.http.ResponseEntity;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *
+ * @param <T>
+ */
+
 public class CommonResult<T> {
 
     private String message;

@@ -5,6 +5,11 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
+/**
+ * Class xác định cấu trúc chung một Page trả về cho Client
+ * @param <T> page của đối tượng generic T
+ */
+
 @Data
 public class CommonPage<T> {
 
