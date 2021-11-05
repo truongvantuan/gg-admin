@@ -6,7 +6,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -143,4 +146,10 @@ public class Product implements Serializable {
     @JoinColumn(name = "attribute_category_id")
     private AttributeCategory attributeCategory;
 
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
+
+    @OneToMany(mappedBy = "product")
+    private Set<ProductLadder> productLadders = new HashSet<>();
 }

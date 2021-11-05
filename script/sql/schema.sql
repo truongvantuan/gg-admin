@@ -256,6 +256,23 @@ CREATE TABLE IF NOT EXISTS pms.brand
     brand_story           TEXT,
     PRIMARY KEY (id)
 );
+
+
+-- ----------------------------
+-- Records of pms.brand      --
+-------------------------------
+INSERT INTO pms.brand VALUES ('1', 'Wanhe', 'W', '0', '1', '1', '100', '100', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180607/timg(5).jpg', '', 'The story of Victoria''s Secret');
+INSERT INTO pms.brand VALUES ('2', 'Samsung', 'S', '100', '1', '1', '100', '100', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180607/timg (1).jpg', null, 'Samsung''s story');
+INSERT INTO pms.brand VALUES ('3', 'Huawei', 'H', '100', '1', '1', '100', '100', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20190129/17f2dd9756d9d333bee8e60ce8c03e4c_222_222.jpg', null, 'The story of Victoria''s Secret');
+INSERT INTO pms.brand VALUES ('4', 'Gree', 'G', '30', '1', '1', '100', '100', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20190129/dc794e7e74121272bbe3ce9bc41ec8c3_222_222.jpg', null, 'The story of Victoria''s Secret');
+INSERT INTO pms.brand VALUES ('5', 'Hota', 'F', '20', '1', '1', '100', '100', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180607/timg (4).jpg', null, 'The story of Victoria''s Secret');
+INSERT INTO pms.brand VALUES ('6', 'Millet', 'M', '500', '1', '1', '100', '100', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20190129/1e34aef2a409119018a4c6258e39ecfb_222_222.png', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180518/5afd7778Nf7800b75.jpg', 'The story of Xiaomi phones');
+INSERT INTO pms.brand VALUES ('21', 'OPPO', 'O', '0', '1', '1', '88', '500', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180607/timg(6).jpg', '', 'string');
+INSERT INTO pms.brand VALUES ('49', 'Seven Wolves', 'S', '200', '1', '1', '77', '400', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20190129/18d8bc3eb13533fab466d702a0d3fd1f40345bcd.jpg', null, 'The story of BOOB');
+INSERT INTO pms.brand VALUES ('50', 'Umiyuki Family', 'H', '200', '1', '1', '66', '300', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20190129/99d3279f1029d32b929343b09d3c72de_222_222.jpg', '', 'The story of Hailan House');
+INSERT INTO pms.brand VALUES ('51', 'Apple', 'A', '200', '1', '1', '55', '200', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180607/timg.jpg', null, 'Apple''s story');
+INSERT INTO pms.brand VALUES ('58', 'NIKE', 'N', '0', '1', '1', '33', '100', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180615/timg (51).jpg', '', 'NIKE''s story');
+
 -- pms.product
 DROP TABLE IF EXISTS pms.product;
 CREATE TABLE IF NOT EXISTS pms.product

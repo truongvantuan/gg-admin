@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 /**
- * Class xác định cấu trúc chung một Page trả về cho Client
+ * Class xác định cấu trúc chung (common format) một Page trả về cho Client
  * @param <T> page của đối tượng generic T
  */
 
@@ -25,7 +25,7 @@ public class CommonPage<T> {
 
     public static <T> CommonPage<T> restPage(Page<T> page) {
         CommonPage<T> commonPage = new CommonPage<>();
-        commonPage.setPageNum(page.getNumber());
+        commonPage.setPageNum(page.getNumber() + 1); // page trong JPA đếm từ 0
         commonPage.setPageSize(page.getSize());
         commonPage.setTotalPage(page.getTotalPages());
         commonPage.setTotal(page.getTotalElements());

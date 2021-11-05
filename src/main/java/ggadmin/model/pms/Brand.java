@@ -51,9 +51,16 @@ public class Brand implements Serializable {
     private String brandStory;
 
     /**
-     * Tải Collection sử dụng Foreign Key được map bởi thuộc tính "brand" phía Product
+     * Lấy danh sách Product sử dụng Foreign Key được map bởi thuộc tính "brand" phía Product
      */
     @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY)
     List<Product> productList = new ArrayList<>();
 
+    public List<Product> getProductList() {
+        return productList;
+    }
+
+    public void addProduct(Product product) {
+        this.productList.add(product);
+    }
 }

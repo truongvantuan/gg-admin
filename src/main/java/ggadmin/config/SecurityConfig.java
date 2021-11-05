@@ -62,8 +62,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 // TODO - xem thêm về cross-domain
                 .antMatchers(HttpMethod.OPTIONS) // Cross-domain requests will first make an options request
-                .permitAll()
-                .antMatchers("/**") // Cho phép truy cập cất cả tài nguyên để testing
+                /*.permitAll()
+                .antMatchers("/**") // Cho phép truy cập cất cả tài nguyên để testing*/
                 .permitAll()
                 .anyRequest() // All requests except the above require authentication
                 .authenticated();
