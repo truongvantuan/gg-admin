@@ -33,9 +33,10 @@ public class Resource implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "resource_category_id")
-    private Long resourceCategoryId;
-
     @ManyToMany(mappedBy = "resources")
     private Collection<Role> roles;
+
+    @ManyToOne
+    @JoinColumn(name = "resource_category_id")
+    private ResourceCategory resourceCategories;
 }

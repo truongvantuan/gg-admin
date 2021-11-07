@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS ums.permission
     PRIMARY KEY (id)
 );
 COMMENT ON COLUMN ums.permission.id IS 'ID';
-COMMENT ON COLUMN ums.permission.pid IS 'id của permission mẹ';
+COMMENT ON COLUMN ums.permission.parent_id IS 'id của permission mẹ';
 COMMENT ON COLUMN ums.permission.name IS 'tên';
 COMMENT ON COLUMN ums.permission.value IS 'giá trị';
 COMMENT ON COLUMN ums.permission.icon IS 'icon hiển thị';

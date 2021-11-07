@@ -1,25 +1,25 @@
 package ggadmin.model.ums;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
 @Entity
-@Table(name = "resource_category")
+@Table(name = "resource_category", schema = "ums")
 public class ResourceCategory implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time")
     private Date createTime;
 
@@ -27,6 +27,6 @@ public class ResourceCategory implements Serializable {
     private String name;
 
     @Column(name = "sort")
-    private Long sort;
+    private Integer sort;
 
 }

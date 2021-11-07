@@ -26,7 +26,7 @@ public class WeightTemplate implements Serializable {
     private String name;
 
     @Column(name = "charge_type", nullable = false)
-    private Long chargeType;
+    private Integer chargeType;
 
     @Column(name = "first_weight")
     private BigDecimal firstWeight;

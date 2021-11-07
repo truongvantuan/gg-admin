@@ -32,10 +32,10 @@ public class Menu implements Serializable {
     private String title;
 
     @Column(name = "level")
-    private Long level;
+    private Integer level;
 
     @Column(name = "sort")
-    private Long sort;
+    private Integer sort;
 
     @Column(name = "name")
     private String name;
