@@ -54,8 +54,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        // 1. Load admin from database, if not found throw exception UsernameNotFoundException
-        // 2. Convert/Wrap admin to AdminUserDetails object and return it.
+//         1. Tải Admin từ database, nếu không có ném ngoại lệ UsernameNotFoundException
+//         2. Chuyển Admin lấy được thành AdminUserDetails chứa admin và permission -> trả về AdminUserDetails
         Optional<Admin> adminOptional = adminRepository.getAdminByUsername(username);
         if (adminOptional.isEmpty()) {
             throw new UsernameNotFoundException("Admin with username: " + username + " not found!");

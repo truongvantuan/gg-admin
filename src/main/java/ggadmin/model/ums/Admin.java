@@ -64,40 +64,23 @@ public class Admin implements Serializable {
     private Integer status;
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+//    @Fetch(value = FetchMode.SELECT)
     @JoinTable(
             name = "admin_role_relation",
             schema = "ums",
             joinColumns = @JoinColumn(name = "admin_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-//    @Fetch(value = FetchMode.SELECT)
     private Set<Role> roles;
 
     @ManyToMany(fetch = FetchType.EAGER)
+//    @Fetch(value = FetchMode.SELECT)
     @JoinTable(
             name = "admin_permission_relation",
             schema = "ums",
             joinColumns = @JoinColumn(name = "admin_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
-//    @Fetch(value = FetchMode.SELECT)
     private Set<Permission> permissions;
 
-    @Override
-    public String toString() {
-        return "Admin{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", icon='" + icon + '\'' +
-                ", nickName='" + nickName + '\'' +
-                ", note='" + note + '\'' +
-                ", createTime=" + createTime +
-                ", loginTime=" + loginTime +
-                ", status=" + status +
-                ", roles=" + roles +
-                ", permissions=" + permissions +
-                '}';
-    }
 }

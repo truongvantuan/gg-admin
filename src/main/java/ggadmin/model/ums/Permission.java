@@ -32,6 +32,9 @@ public class Permission implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "parent_id")
+    private Long parentId;
+
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -55,10 +58,6 @@ public class Permission implements Serializable {
 
     @Column(name = "sort")
     private Integer sort;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "parent_id")
-//    private Permission parentPermission;
 
     @ManyToMany(mappedBy = "permissions")
     @JsonIgnore
