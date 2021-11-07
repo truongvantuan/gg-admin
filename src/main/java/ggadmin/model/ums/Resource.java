@@ -1,0 +1,41 @@
+package ggadmin.model.ums;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Date;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "resource", schema = "ums")
+public class Resource implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "create_time")
+    private Date createTime;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "url")
+    private String url;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "resource_category_id")
+    private Long resourceCategoryId;
+
+    @ManyToMany(mappedBy = "resources")
+    private Collection<Role> roles;
+}
