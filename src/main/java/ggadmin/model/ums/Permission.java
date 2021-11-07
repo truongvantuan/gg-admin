@@ -56,9 +56,9 @@ public class Permission implements Serializable {
     @Column(name = "sort")
     private Integer sort;
 
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
-    private Permission parentPermission;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "parent_id")
+//    private Permission parentPermission;
 
     @ManyToMany(mappedBy = "permissions")
     @JsonIgnore

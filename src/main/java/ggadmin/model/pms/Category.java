@@ -53,7 +53,7 @@ public class Category implements Serializable {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pid")
+    @JoinColumn(name = "parent_id")
     private Category parentCategory;
 
     /*@OneToMany

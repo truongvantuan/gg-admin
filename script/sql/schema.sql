@@ -340,7 +340,7 @@ CREATE TABLE IF NOT EXISTS pms.category
     PRIMARY KEY (id)
 );
 COMMENT ON TABLE pms.category IS 'bảng danh mục sản phẩm';
-COMMENT ON COLUMN pms.category.pid IS 'id của category mẹ, giá trị 0 là root_category';
+COMMENT ON COLUMN pms.category.parent_id IS 'id của category mẹ, giá trị 0 là root_category';
 COMMENT ON COLUMN pms.category.name IS 'tên category';
 COMMENT ON COLUMN pms.category.level IS 'cấp bậc phân loại: 0->level1, 1->level2';
 COMMENT ON COLUMN pms.category.product_count IS 'số sản phẩm thuộc có';
