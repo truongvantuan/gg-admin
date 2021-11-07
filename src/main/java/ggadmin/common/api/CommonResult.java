@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Định nghĩa cấu trúc chung trả về cho client
  *
  * @param <T>
  */

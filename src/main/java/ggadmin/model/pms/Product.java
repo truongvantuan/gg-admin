@@ -6,10 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -152,4 +149,14 @@ public class Product implements Serializable {
 
     @OneToMany(mappedBy = "product")
     private Set<ProductLadder> productLadders = new HashSet<>();
+
+    @OneToMany(mappedBy = "product")
+    private Collection<ProductFullReduction> productFullReductions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product")
+    private List<ProductOperateLog> operateLogs;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "weight_template_id")
+    private WeightTemplate weightTemplate;
 }

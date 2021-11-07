@@ -318,6 +318,8 @@ CREATE TABLE IF NOT EXISTS pms.product
     PRIMARY KEY (id)
 );
 
+
+
 COMMENT ON TABLE pms.product IS 'product table';
 
 DROP TABLE IF EXISTS pms.category;

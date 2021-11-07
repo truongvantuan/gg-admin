@@ -25,7 +25,8 @@ public class CommonPage<T> {
 
     public static <T> CommonPage<T> restPage(Page<T> page) {
         CommonPage<T> commonPage = new CommonPage<>();
-        commonPage.setPageNum(page.getNumber() + 1); // page trong JPA đếm từ 0
+        // page trong JPA đếm từ 0, cần cộng thêm 1 để trả về client hiển thị đúng thứ tự từ tang 1
+        commonPage.setPageNum(page.getNumber() + 1);
         commonPage.setPageSize(page.getSize());
         commonPage.setTotalPage(page.getTotalPages());
         commonPage.setTotal(page.getTotalElements());
