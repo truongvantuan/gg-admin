@@ -61,8 +61,8 @@ public class AdminServiceImpl implements AdminService {
             throw new UsernameNotFoundException("Admin with username: " + username + " not found!");
         }
         Admin admin = adminOptional.get();
-        List<Permission> permissions = getPermissions(admin.getId());
-        return new AdminUserDetails(admin, permissions);
+        List<Permission> permissionList = getPermissions(admin.getId());
+        return new AdminUserDetails(admin, permissionList);
     }
 
     @Override
@@ -99,6 +99,13 @@ public class AdminServiceImpl implements AdminService {
         return token;
     }
 
+    /**
+     * Permission đã lưu vào database sẽ được lấy ra theo ID của Admin sử hữu.
+     * Các giá trị Permissions này sẽ đem so sánh với SpEL (hasAuthority) cấu hình tại Controller method.
+     * Nếu trùng Admin tương ứng sẽ có quyền truy cập (request đi qua filter)
+     * @param adminId
+     * @return
+     */
     @Override
     public List<Permission> getPermissions(Long adminId) {
         return permissionRepository.getPermissionsByAdminId(adminId);

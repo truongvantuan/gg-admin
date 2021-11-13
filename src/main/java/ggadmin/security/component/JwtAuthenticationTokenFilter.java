@@ -1,4 +1,4 @@
-package ggadmin.component;
+package ggadmin.security.component;
 
 import ggadmin.common.utils.JwtTokenUtil;
 import org.slf4j.Logger;

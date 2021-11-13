@@ -21,6 +21,11 @@ public class AdminUserDetails implements UserDetails {
         this.permissions = permissions;
     }
 
+    /**
+     * Lấy ra các phân quyền được sở hữu bởi Admin.
+     * Thực tế nó là permissions trong database.
+     * @return
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.permissions.stream()

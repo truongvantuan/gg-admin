@@ -28,6 +28,9 @@ public class Menu implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "parent_id")
+    private Long parentMenuId;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time")
     private Date createTime;
@@ -47,9 +50,12 @@ public class Menu implements Serializable {
     @Column(name = "icon")
     private String icon;
 
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
-    private Menu parentMenu;
+    @Column(name = "hidden")
+    private Integer hidden;
+
+//    @ManyToOne
+//    @JoinColumn(name = "parent_id")
+//    private Menu parentMenu;
 
     @ManyToMany(mappedBy = "menus")
     @JsonIgnore

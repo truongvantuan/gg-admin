@@ -1,0 +1,7 @@
+@startuml
+autonumber
+
+Client -> Authentication: Authentication Request
+Authentication -> DynamicSecurityFilter: gửi Authentication lên
+
+@enduml

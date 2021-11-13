@@ -13,7 +13,7 @@ jwt:
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/gg
-#    url: jdbc:postgresql://localhost:5432/ggadmin
+    #    url: jdbc:postgresql://localhost:5432/ggadmin
     username: truongtuan
     password:
   jpa:
@@ -52,3 +52,24 @@ redis:
 data:
   exception:
     user_exist: Admin đã được đăng ký!
+
+#Binding dữ liệu vào IgnoreUrlsConfig#urls
+secure:
+  ignored:
+    urls: # danh sách resource không yêu cầu xác thực - phân quyền
+      - /swagger-ui.html
+      - /swagger-resources/**
+      - /swagger/**
+      - /**/v2/api-docs
+      - /**/*.js
+      - /**/*.css
+      - /**/*.png
+      - /**/*.ico
+      - /webjars/springfox-swagger-ui/**
+      - /actuator/**
+      - /druid/**
+      - /admin/login
+      - /admin/register
+      - /admin/info
+      - /admin/logout
+      - /minio/upload
