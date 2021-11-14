@@ -4,18 +4,17 @@ import ggadmin.common.api.CommonResult;
 import ggadmin.dto.AdminDTO;
 import ggadmin.dto.AdminLoginDTO;
 import ggadmin.model.ums.Admin;
-import ggadmin.model.ums.Permission;
 import ggadmin.model.ums.Resource;
 import ggadmin.service.ums.AdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
@@ -51,11 +50,12 @@ public class AdminController {
     @ApiOperation(value = "Đăng nhập tài khoản admin dùng username/password")
     @PostMapping("/login")
     @ResponseBody
-    public ResponseEntity<?> login(@RequestBody AdminLoginDTO adminLoginDto, BindingResult bindingResult) {
+    public ResponseEntity<?> login(@RequestBody AdminLoginDTO adminLoginDto, BindingResult bindingResult, HttpServletRequest request) {
         String token = adminService.login(adminLoginDto.getUsername(), adminLoginDto.getPassword());
         if (token == null) {
             return CommonResult.failed("Wrong username or password!");
         }
+        adminService.saveLoginLog(adminService.getAdminByUsername(adminLoginDto.getUsername()).get().getId(), request);
         Map<String, Object> tokenMap = new HashMap<>();
         tokenMap.put("tokenHead", tokenHead);
         tokenMap.put("token", token);

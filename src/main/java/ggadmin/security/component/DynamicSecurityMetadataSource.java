@@ -13,51 +13,50 @@ import java.util.*;
 
 /**
  * Biết được Principle từ Authentication đã xác thực thành công, được cung cấp từ SecurityContextHolder,
- * {@link #getAttributes(Object)} giúp lấy Resource theo yêu cầu của path truy cập hiện tại.
+ * {@link #getAttributes(Object)} giúp lấy configAttribute thuộc Resource theo yêu cầu của path truy cập hiện tại.
  * <p>
  * FilterInvocationSecurityMetadataSource là sub-interface của SecurityMetadataSource
  */
 public class DynamicSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 
-    private static Map<String, ConfigAttribute> configAttributeMap = null;
+    private static Map<String, ConfigAttribute> allConfigAttributeMap = null;
 
     @Autowired
     private DynamicSecurityService dynamicSecurityService;
 
     @PostConstruct
     public void loadDataSource() {
-        configAttributeMap = dynamicSecurityService.loadDataSource();
+        allConfigAttributeMap = dynamicSecurityService.loadDataSource();
     }
 
     public void clearDataSource() {
-        configAttributeMap.clear();
-        configAttributeMap = null;
+        allConfigAttributeMap.clear();
+        allConfigAttributeMap = null;
     }
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
 
-        if (configAttributeMap == null) {
+        if (allConfigAttributeMap == null) {
             this.loadDataSource();
         }
 
         // Lấy path hiện đang được request đến
         String url = ((FilterInvocation) object).getRequestUrl();
-        String pathRequest = URLUtil.getPath(url);
+        String requestPath = URLUtil.getPath(url);
 
         List<ConfigAttribute> configAttributes = new ArrayList<>();
         PathMatcher pathmatcher = new AntPathMatcher();
-        Iterator<String> iterator = configAttributeMap.keySet().iterator(); // setKey là url của resource
-        // Lấy resource được yêu cầu để truy cập vào path
+        Iterator<String> iterator = allConfigAttributeMap.keySet().iterator(); // setKey là url của resource
+        // Lấy resource mà request yêu cầu
         while (iterator.hasNext()) {
-            String resourceUrl = iterator.next();
-            // So sánh url resource và path đang được request đến, nếu trùng lấy resource liên quan đến path request
-            if (pathmatcher.match(resourceUrl, pathRequest)) {
-                configAttributes.add(configAttributeMap.get(resourceUrl));
+            String resourcePath = iterator.next();
+            // So sánh url resource và path đang được request đến, đúng lấy resource mà request yêu cầu
+            if (pathmatcher.match(resourcePath, requestPath)) {
+                configAttributes.add(allConfigAttributeMap.get(resourcePath));
             }
         }
 
-        // The operation request permission is not set, and an empty collection is returned
         return configAttributes;
     }
 

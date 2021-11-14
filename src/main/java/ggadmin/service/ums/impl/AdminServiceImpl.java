@@ -5,10 +5,10 @@ import ggadmin.dto.AdminDTO;
 import ggadmin.dto.AdminUserDetails;
 import ggadmin.exception.ums.AdminExistException;
 import ggadmin.model.ums.Admin;
-import ggadmin.model.ums.Permission;
+import ggadmin.model.ums.AdminLoginLog;
 import ggadmin.model.ums.Resource;
+import ggadmin.repository.ums.AdminLoginLogRepository;
 import ggadmin.repository.ums.AdminRepository;
-import ggadmin.repository.ums.PermissionRepository;
 import ggadmin.repository.ums.ResourceRepository;
 import ggadmin.service.ums.AdminService;
 import org.slf4j.Logger;
@@ -25,6 +25,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
@@ -48,6 +49,8 @@ public class AdminServiceImpl implements AdminService {
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AdminLoginLogRepository adminLoginLogRepository;
 
     @Override
     public Optional<Admin> getAdminByUsername(String username) {
@@ -56,8 +59,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-//         1. Tải Admin từ database, nếu không có ném ngoại lệ UsernameNotFoundException
-//         2. Chuyển Admin lấy được thành AdminUserDetails chứa admin và permission -> trả về AdminUserDetails
+        // 1. Tải Admin từ database, nếu không có ném ngoại lệ UsernameNotFoundException
+        // 2. Chuyển Admin lấy được thành AdminUserDetails chứa admin và permission -> trả về AdminUserDetails
         Optional<Admin> adminOptional = adminRepository.getAdminByUsername(username);
         if (adminOptional.isEmpty()) {
             throw new UsernameNotFoundException("Admin with username: " + username + " not found!");
@@ -88,7 +91,7 @@ public class AdminServiceImpl implements AdminService {
         try {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-                throw new BadCredentialsException("Incorrect password");
+                throw new BadCredentialsException("Incorrect username/password!");
             }
             adminRepository.saveLoginTime(new Date(), username);
             UsernamePasswordAuthenticationToken authentication =
@@ -105,12 +108,30 @@ public class AdminServiceImpl implements AdminService {
      * Permission đã lưu vào database sẽ được lấy ra theo ID của Admin sử hữu.
      * Các giá trị Permissions này sẽ đem so sánh với SpEL (hasAuthority) cấu hình tại Controller method.
      * Nếu trùng Admin tương ứng sẽ có quyền truy cập (request đi qua filter)
+     *
      * @param adminId
      * @return
      */
     @Override
     public List<Resource> getResources(Long adminId) {
         return resourceRepository.getResourcesByAdminId(adminId);
+    }
+
+    /**
+     * Lưu lịch sử đăng nhập dựa trên adminId, các thông tin từ client được lấy từ request.
+     *
+     * @param adminId admin đăng nhập
+     * @param request request dùng đăng nhập
+     */
+    @Override
+    public void saveLoginLog(Long adminId, HttpServletRequest request) {
+        AdminLoginLog adminLoginLog = AdminLoginLog.builder()
+                .adminId(adminId)
+                .createTime(new Date())
+                .ip(request.getRemoteHost())
+                .address(request.getRemoteAddr())
+                .userAgent(request.getHeader("User-Agent")).build();
+        adminLoginLogRepository.save(adminLoginLog);
     }
 
 }

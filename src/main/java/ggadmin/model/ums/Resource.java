@@ -8,7 +8,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -37,24 +39,11 @@ public class Resource implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "resource_category_id")
+    private Long categoryId;
+
     @ManyToMany(mappedBy = "resources", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "resource_category_id")
-    private ResourceCategory resourceCategories;
-
-    @Override
-    public String toString() {
-        return "Resource{" +
-                "id=" + id +
-                ", createTime=" + createTime +
-                ", name='" + name + '\'' +
-                ", url='" + url + '\'' +
-                ", description='" + description + '\'' +
-                ", roles=" + roles +
-                ", resourceCategories=" + resourceCategories +
-                '}';
-    }
 }

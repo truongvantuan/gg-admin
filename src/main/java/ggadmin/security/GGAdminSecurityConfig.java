@@ -45,7 +45,7 @@ public class GGAdminSecurityConfig extends SecurityConfig {
     }
 
     /**
-     * Bean giúp lấy ra resource trong database, chuyển thành map có:
+     * Bean giúp lấy ra toàn bộ resource trong database, chuyển thành map có:
      * key là url (url đẫn đến resource)
      * value là ConfigAttribute - được wrap từ hai properties id:name của {@link Resource}
      * Ví dụ: 5:Product management

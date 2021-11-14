@@ -6,6 +6,5 @@ import java.util.Map;
 
 public interface DynamicSecurityService {
 
-    // TODO tìm hiểu ConfigAttribute
     Map<String, ConfigAttribute> loadDataSource();
 }

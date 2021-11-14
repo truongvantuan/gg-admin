@@ -7,6 +7,7 @@ import ggadmin.model.ums.Permission;
 import ggadmin.model.ums.Resource;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -21,5 +22,7 @@ public interface AdminService extends UserDetailsService {
 
     //    Set<PermissionDTO> getPermissions(Long adminId);
     List<Resource> getResources(Long adminId);
+
+    void saveLoginLog(Long adminId, HttpServletRequest request);
 
 }

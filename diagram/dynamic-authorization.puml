@@ -1,7 +1,15 @@
 @startuml
 autonumber
 
-Client -> Authentication: Authentication Request
-Authentication -> DynamicSecurityFilter: gửi Authentication lên
-
+SecurityContextHolder -> DynamicSecurityFilter: truyền Authentication\nđã xác thực thành công
+DynamicSecurityFilter -> DynamicSecurityFilter: kiểm tra request là OPTIONS\n-> cho đi qua
+DynamicSecurityFilter -> DynamicSecurityFilter: kiểm tra request tới path thuộc\nsecure.ignored.urls -> cho đi qua
+DynamicSecurityFilter -> DynamicSecurityMetadataSource: gửi Authentication lên
+DynamicSecurityMetadataSource -> DynamicSecurityService: gọi loadDataSource()
+DynamicSecurityService -> ResourceService: gọi listAll()
+ResourceService -> DynamicSecurityService: trả về map ConfigAttribute
+DynamicSecurityService -> DynamicSecurityMetadataSource: trả về allConfigAttributeMap
+DynamicSecurityMetadataSource -> DynamicSecurityMetadataSource: kiểm tra match(resourcePath, requestPath)
+DynamicSecurityMetadataSource -> DynamicSecurityFilter: return configAttribute\ncủa resource đang gọi đến
+DynamicSecurityFilter -> DynamicAccessDecisionManager: truyền configAttribute vào hàm decide(), throw new AccessDeniedException hoặc tiếp tục quá trình request
 @enduml

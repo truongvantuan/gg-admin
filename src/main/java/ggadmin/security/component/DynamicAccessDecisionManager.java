@@ -20,8 +20,8 @@ public class DynamicAccessDecisionManager implements AccessDecisionManager {
      * Decide được truyền vào các thông tin liên quan cần thiết để đưa ra quyết định phân quyền.
      *
      * @param authentication
-     * @param object           secure object
-     * @param configAttributes các resource mà request cần truy cập
+     * @param object           secure object ở đây là method trong controller
+     * @param configAttributes configAttribute của resource mà request đang cần truy cập
      * @throws AccessDeniedException
      * @throws InsufficientAuthenticationException
      */
@@ -29,7 +29,7 @@ public class DynamicAccessDecisionManager implements AccessDecisionManager {
     public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
 
         // TODO xem lại check này
-        // Direct release when the interface is not configured with resources
+        // Resource chưa được cấu hình, cho phép truy cập không cần phân quyền
         if (configAttributes.isEmpty()) {
             return;
         }
@@ -45,7 +45,7 @@ public class DynamicAccessDecisionManager implements AccessDecisionManager {
                 }
             }
         }
-        throw new AccessDeniedException("Xin lỗi, bạn không có quyền truy cập!");
+        throw new AccessDeniedException("Bạn không có quyền truy cập!");
     }
 
     @Override

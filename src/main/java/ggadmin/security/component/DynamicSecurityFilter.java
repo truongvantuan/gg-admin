@@ -19,7 +19,7 @@ import java.util.Collection;
 /**
  * Filter dùng cho dynamic permission controller.
  * Cho tất cả OPTIONS request đi qua.
- * Cho tất cả các request tới các path đã được cấu hình tại secure.ignored.urls (mapping vào IgnoreUrlsConfig) đi qua.
+ * Cho tất cả các request tới các path đã được cấu hình trong secure.ignored.urls (được mapping vào IgnoreUrlsConfig) đi qua.
  * FilterSecurityInterceptor là sub-interface của AbstractSecurityInterceptor
  */
 public class DynamicSecurityFilter extends AbstractSecurityInterceptor implements Filter {
@@ -55,7 +55,7 @@ public class DynamicSecurityFilter extends AbstractSecurityInterceptor implement
         }
 
         PathMatcher pathMatcher = new AntPathMatcher();
-        // Các request nằm trong whitelist path đã cấu hình sẵn, cho phép đi qua filter
+        // Request tới các Resource Path đã cấu hình trong secure.ignored.urls, cho phép đi qua.
         for (String path : ignoreUrlsConfig.getUrls()) {
             if (pathMatcher.match(path, request.getRequestURI())) {
                 fi.getChain().doFilter(fi.getRequest(), fi.getResponse());
@@ -65,9 +65,10 @@ public class DynamicSecurityFilter extends AbstractSecurityInterceptor implement
 
         /**
          * Tất cả các hoạt động phân quyền còn lại được diễn ra tại đây, hàm beforeInvocation() gọi tới
-         * hàm {@link DynamicAccessDecisionManager#decide(Authentication, Object, Collection)} thực hiện phân quyền.
+         * hàm {@link DynamicAccessDecisionManager#decide(Authentication, Object, Collection)} để thực hiện phân quyền.
          * ConfigAttribute truyền vào decide() được cung cấp bởi {@link DynamicSecurityMetadataSource#getAttributes(Object)}
-         * thứ cần để quyết định quyền truy cập tới Resources
+         * thứ cần để quyết định quyền truy cập tới Resources.
+         *
          */
         InterceptorStatusToken token = super.beforeInvocation(fi);
         try {

@@ -2,8 +2,8 @@
 autonumber
 Client -> JwtAuthenticationTokenFilter : Request /** with token
 JwtAuthenticationTokenFilter -> JwtAuthenticationTokenFilter : Check request has Token then extract Token
-JwtAuthenticationTokenFilter -> AdminService : load UserDetails(Admin) using username \nby call getAdminByUsername()
-AdminService -> JwtAuthenticationTokenFilter : return Admin(AdminUserDetails)
+JwtAuthenticationTokenFilter -> AdminService : load UserDetails/Admin using username \nby call getAdminByUsername()
+AdminService -> JwtAuthenticationTokenFilter : return Admin/AdminUserDetails
 JwtAuthenticationTokenFilter -> JwtTokenUtil : validate Token String with validateToken()
 JwtTokenUtil -> JwtAuthenticationTokenFilter : return True if Token valid
 JwtAuthenticationTokenFilter -> JwtAuthenticationTokenFilter : if token valid, config spring security for admin
