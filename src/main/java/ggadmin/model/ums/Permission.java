@@ -59,12 +59,12 @@ public class Permission implements Serializable {
     @Column(name = "sort")
     private Integer sort;
 
-    @ManyToMany(mappedBy = "permissions")
+/*    @ManyToMany(mappedBy = "permissions")
     @JsonIgnore
     private Set<Admin> admins;
 
     @ManyToMany(mappedBy = "permissions")
     @JsonIgnore
-    private Set<Role> roles;
+    private Set<Role> roles;*/
 
 }

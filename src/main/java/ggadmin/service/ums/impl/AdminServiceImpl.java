@@ -6,8 +6,10 @@ import ggadmin.dto.AdminUserDetails;
 import ggadmin.exception.ums.AdminExistException;
 import ggadmin.model.ums.Admin;
 import ggadmin.model.ums.Permission;
+import ggadmin.model.ums.Resource;
 import ggadmin.repository.ums.AdminRepository;
 import ggadmin.repository.ums.PermissionRepository;
+import ggadmin.repository.ums.ResourceRepository;
 import ggadmin.service.ums.AdminService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +41,7 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private AdminRepository adminRepository;
     @Autowired
-    private PermissionRepository permissionRepository;
+    private ResourceRepository resourceRepository;
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
@@ -61,8 +63,8 @@ public class AdminServiceImpl implements AdminService {
             throw new UsernameNotFoundException("Admin with username: " + username + " not found!");
         }
         Admin admin = adminOptional.get();
-        List<Permission> permissionList = getPermissions(admin.getId());
-        return new AdminUserDetails(admin, permissionList);
+        List<Resource> resourceList = getResources(admin.getId());
+        return new AdminUserDetails(admin, resourceList);
     }
 
     @Override
@@ -107,8 +109,8 @@ public class AdminServiceImpl implements AdminService {
      * @return
      */
     @Override
-    public List<Permission> getPermissions(Long adminId) {
-        return permissionRepository.getPermissionsByAdminId(adminId);
+    public List<Resource> getResources(Long adminId) {
+        return resourceRepository.getResourcesByAdminId(adminId);
     }
 
 }

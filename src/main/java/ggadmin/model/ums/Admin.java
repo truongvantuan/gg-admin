@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -73,7 +74,7 @@ public class Admin implements Serializable {
     )
     private Set<Role> roles;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+/*    @ManyToMany(fetch = FetchType.EAGER)
 //    @Fetch(value = FetchMode.SELECT)
     @JoinTable(
             name = "admin_permission_relation",
@@ -81,6 +82,6 @@ public class Admin implements Serializable {
             joinColumns = @JoinColumn(name = "admin_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
-    private Set<Permission> permissions;
+    private Set<Permission> permissions;*/
 
 }

@@ -1,7 +1,7 @@
 package ggadmin.dto;
 
 import ggadmin.model.ums.Admin;
-import ggadmin.model.ums.Permission;
+import ggadmin.model.ums.Resource;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,23 +14,24 @@ public class AdminUserDetails implements UserDetails {
 
     private Admin admin;
 
-    private List<Permission> permissions;
+    private List<Resource> resources;
 
-    public AdminUserDetails(Admin admin, List<Permission> permissions) {
+    public AdminUserDetails(Admin admin, List<Resource> resourceList) {
         this.admin = admin;
-        this.permissions = permissions;
+        this.resources = resourceList;
     }
 
     /**
      * Lấy ra các phân quyền được sở hữu bởi Admin.
-     * Thực tế nó là permissions trong database.
+     * Thực tế nó là Resource trong database.
+     *
      * @return
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.permissions.stream()
-                .filter(permission -> permission.getValue() != null)
-                .map(permission -> new SimpleGrantedAuthority(permission.getValue()))
+        return this.resources.stream()
+                .filter(resource -> resource.getUrl() != null)
+                .map(resource -> new SimpleGrantedAuthority(resource.getId() + ":" + resource.getName()))
                 .collect(Collectors.toList());
     }
 

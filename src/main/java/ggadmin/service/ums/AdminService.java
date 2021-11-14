@@ -4,6 +4,7 @@ import ggadmin.dto.AdminDTO;
 import ggadmin.dto.PermissionDTO;
 import ggadmin.model.ums.Admin;
 import ggadmin.model.ums.Permission;
+import ggadmin.model.ums.Resource;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -19,6 +20,6 @@ public interface AdminService extends UserDetailsService {
     String login(String username, String password); // đăng nhập admin với username/password
 
     //    Set<PermissionDTO> getPermissions(Long adminId);
-    List<Permission> getPermissions(Long adminId);
+    List<Resource> getResources(Long adminId);
 
 }

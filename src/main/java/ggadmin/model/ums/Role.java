@@ -52,13 +52,13 @@ public class Role implements Serializable {
     @JsonIgnore
     private Set<Admin> admins;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+/*    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "role_permission_relation",
             schema = "ums",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
-    private Set<Permission> permissions = new HashSet<>();
+    private Set<Permission> permissions = new HashSet<>();*/
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -71,11 +71,11 @@ public class Role implements Serializable {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "role_resource_relation",
             schema = "ums",
+            name = "role_resource_relation",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "resource_id")
     )
-    private Collection<Resource> resources = new ArrayList<>();
+    private Set<Resource> resources = new HashSet<>();
 
 }

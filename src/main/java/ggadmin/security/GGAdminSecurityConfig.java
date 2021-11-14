@@ -37,8 +37,8 @@ public class GGAdminSecurityConfig extends SecurityConfig {
         return username -> {
             Admin admin = adminService.getAdminByUsername(username).get();
             if (admin != null) {
-                List<Permission> permissions = adminService.getPermissions(admin.getId());
-                return new AdminUserDetails(admin, permissions);
+                List<Resource> resources = adminService.getResources(admin.getId());
+                return new AdminUserDetails(admin, resources);
             }
             throw new UsernameNotFoundException("Sai tên đăng nhập hoặc mật khẩu!");
         };

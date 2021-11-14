@@ -5,6 +5,7 @@ import ggadmin.dto.AdminDTO;
 import ggadmin.dto.AdminLoginDTO;
 import ggadmin.model.ums.Admin;
 import ggadmin.model.ums.Permission;
+import ggadmin.model.ums.Resource;
 import ggadmin.service.ums.AdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -61,9 +62,9 @@ public class AdminController {
         return CommonResult.success(tokenMap, "Login successfully!");
     }
 
-    @GetMapping("/permission/{adminId}")
+    @GetMapping("/resource/{adminId}")
     public ResponseEntity<?> getPermissions(@PathVariable Long adminId) {
-        List<Permission> permissionList = adminService.getPermissions(adminId);
-        return CommonResult.success(permissionList);
+        List<Resource> resourceList = adminService.getResources(adminId);
+        return CommonResult.success(resourceList);
     }
 }
