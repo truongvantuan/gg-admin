@@ -74,14 +74,4 @@ public class Admin implements Serializable {
     )
     private Set<Role> roles;
 
-/*    @ManyToMany(fetch = FetchType.EAGER)
-//    @Fetch(value = FetchMode.SELECT)
-    @JoinTable(
-            name = "admin_permission_relation",
-            schema = "ums",
-            joinColumns = @JoinColumn(name = "admin_id"),
-            inverseJoinColumns = @JoinColumn(name = "permission_id")
-    )
-    private Set<Permission> permissions;*/
-
 }

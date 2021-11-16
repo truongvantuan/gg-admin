@@ -2,14 +2,11 @@ package ggadmin.service.ums.impl;
 
 import ggadmin.common.utils.JwtTokenUtil;
 import ggadmin.dto.AdminDTO;
+import ggadmin.dto.AdminInfoDTO;
 import ggadmin.dto.AdminUserDetails;
 import ggadmin.exception.ums.AdminExistException;
-import ggadmin.model.ums.Admin;
-import ggadmin.model.ums.AdminLoginLog;
-import ggadmin.model.ums.Resource;
-import ggadmin.repository.ums.AdminLoginLogRepository;
-import ggadmin.repository.ums.AdminRepository;
-import ggadmin.repository.ums.ResourceRepository;
+import ggadmin.model.ums.*;
+import ggadmin.repository.ums.*;
 import ggadmin.service.ums.AdminService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +24,11 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -51,6 +50,10 @@ public class AdminServiceImpl implements AdminService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AdminLoginLogRepository adminLoginLogRepository;
+    @Autowired
+    private MenuRepository menuRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public Optional<Admin> getAdminByUsername(String username) {
@@ -134,4 +137,21 @@ public class AdminServiceImpl implements AdminService {
         adminLoginLogRepository.save(adminLoginLog);
     }
 
+    @Override
+    public AdminInfoDTO getAdminInfo(Principal principal) {
+        // Lấy username đã đăng nhập, xác thực thành công từ Principal
+        String username = principal.getName();
+        Admin admin = adminRepository.getAdminByUsername(username).get();
+        List<Role> roleList = roleRepository.getAllByAdminsIs(admin);
+        List<String> roles = roleList.stream()
+                .map(Role::getName)
+                .collect(Collectors.toList());
+        List<Menu> menus = menuRepository.getAllByRolesIn(roleList);
+        return AdminInfoDTO.builder()
+                .username(username)
+                .icon(admin.getIcon())
+                .roles(roles)
+                .menus(menus)
+                .build();
+    }
 }

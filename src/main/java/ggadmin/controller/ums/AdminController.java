@@ -2,6 +2,7 @@ package ggadmin.controller.ums;
 
 import ggadmin.common.api.CommonResult;
 import ggadmin.dto.AdminDTO;
+import ggadmin.dto.AdminInfoDTO;
 import ggadmin.dto.AdminLoginDTO;
 import ggadmin.model.ums.Admin;
 import ggadmin.model.ums.Resource;
@@ -9,13 +10,16 @@ import ggadmin.service.ums.AdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,9 +66,22 @@ public class AdminController {
         return CommonResult.success(tokenMap, "Login successfully!");
     }
 
+    @ApiOperation("Lấy về tất cả các resources mà Admin sở hữu")
     @GetMapping("/resource/{adminId}")
-    public ResponseEntity<?> getPermissions(@PathVariable Long adminId) {
+    @ResponseBody
+    public ResponseEntity<?> getResources(@PathVariable Long adminId) {
         List<Resource> resourceList = adminService.getResources(adminId);
         return CommonResult.success(resourceList);
+    }
+
+    @ApiOperation("Lấy tất cả thông tin Roles, Menus sở hữu bởi Admin")
+    @GetMapping("/info")
+    @ResponseBody
+    public ResponseEntity<?> getAdminInfo(Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Chưa đăng nhập hoặc token đã hết hạn!");
+        }
+        AdminInfoDTO adminInfo = adminService.getAdminInfo(principal);
+        return CommonResult.success(adminInfo);
     }
 }

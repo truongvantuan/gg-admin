@@ -48,17 +48,9 @@ public class Role implements Serializable {
     @Column(name = "sort")
     private Integer sort;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Admin> admins;
-
-/*    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "role_permission_relation",
-            schema = "ums",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "permission_id")
-    )
-    private Set<Permission> permissions = new HashSet<>();*/
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -67,7 +59,7 @@ public class Role implements Serializable {
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "menu_id")
     )
-    private Collection<Menu> menus = new ArrayList<>();
+    private Set<Menu> menus = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

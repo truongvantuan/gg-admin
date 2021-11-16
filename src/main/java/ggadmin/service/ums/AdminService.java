@@ -1,6 +1,8 @@
 package ggadmin.service.ums;
 
 import ggadmin.dto.AdminDTO;
+import ggadmin.dto.AdminInfo;
+import ggadmin.dto.AdminInfoDTO;
 import ggadmin.dto.PermissionDTO;
 import ggadmin.model.ums.Admin;
 import ggadmin.model.ums.Permission;
@@ -8,6 +10,7 @@ import ggadmin.model.ums.Resource;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -24,5 +27,7 @@ public interface AdminService extends UserDetailsService {
     List<Resource> getResources(Long adminId);
 
     void saveLoginLog(Long adminId, HttpServletRequest request);
+
+    AdminInfoDTO getAdminInfo(Principal principal);
 
 }
