@@ -15,4 +15,6 @@ public interface RoleService {
     Page<Role> getRolePage(Integer pageNum, Integer pageSize);
 
     Page<Role> getRolePage(String keyword, Integer pageNum, Integer pageSize);
+
+    boolean updateStatus(Long roleId, Integer roleStatus);
 }

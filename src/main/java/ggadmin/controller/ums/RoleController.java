@@ -2,6 +2,8 @@ package ggadmin.controller.ums;
 
 import ggadmin.common.api.CommonPage;
 import ggadmin.common.api.CommonResult;
+import ggadmin.dto.ums.RoleDTO;
+import ggadmin.dto.ums.mapper.RoleMapper;
 import ggadmin.model.ums.Role;
 import ggadmin.service.ums.RoleService;
 import io.swagger.annotations.ApiOperation;
@@ -9,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -43,8 +42,15 @@ public class RoleController {
         } else {
             rolePage = roleService.getRolePage(keyword, pageNum, pageSize);
         }
-        CommonPage<Role> roleCommonPage = CommonPage.restPage(rolePage);
-        return CommonResult.success(roleCommonPage);
+        Page<RoleDTO> roleDTOPage = rolePage.map(RoleMapper.INSTANCE::toRoleDto);
+        CommonPage<RoleDTO> roleDTOCommonPage = CommonPage.restPage(roleDTOPage);
+        return CommonResult.success(roleDTOCommonPage);
+    }
+
+    @PostMapping("/updateStatus/{id}")
+    public ResponseEntity<?> updateStatus(@PathVariable("id") Long roleId,
+                                          @RequestParam("status") Integer status) {
+        return roleService.updateStatus(roleId, status) ? CommonResult.success(null) : CommonResult.failed();
     }
 
 }

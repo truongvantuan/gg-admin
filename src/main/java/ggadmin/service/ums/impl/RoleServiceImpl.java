@@ -46,4 +46,17 @@ public class RoleServiceImpl implements RoleService {
         Pageable paging = PageRequest.of(pageNum, pageSize);
         return roleRepository.findAllByNameContainingIgnoreCase(keyword, paging);
     }
+
+    @Override
+    public boolean updateStatus(Long roleId, Integer roleStatus) {
+        Role roleToUpdate = roleRepository.getById(roleId);
+        roleToUpdate.setStatus(roleStatus);
+        boolean isSuccess = true;
+        try {
+            roleRepository.save(roleToUpdate);
+        } catch (Exception e) {
+            isSuccess = false;
+        }
+        return isSuccess;
+    }
 }
