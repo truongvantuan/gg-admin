@@ -42,7 +42,7 @@ public class Resource implements Serializable {
     @Column(name = "resource_category_id")
     private Long categoryId;
 
-    @ManyToMany(mappedBy = "resources", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "resources", fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 

@@ -1,9 +1,6 @@
 package ggadmin.model.ums;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -16,6 +13,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -37,13 +35,13 @@ public class Admin implements Serializable {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "icon")
+    private String icon;
+
     @NotNull
     @Email
     @Column(name = "email")
     private String email;
-
-    @Column(name = "icon")
-    private String icon;
 
     @Column(name = "nick_name")
     private String nickName;
@@ -64,7 +62,7 @@ public class Admin implements Serializable {
     @Column(name = "status")
     private Integer status;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 //    @Fetch(value = FetchMode.SELECT)
     @JoinTable(
             name = "admin_role_relation",

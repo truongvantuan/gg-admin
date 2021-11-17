@@ -1,10 +1,9 @@
 package ggadmin.security;
 
-import ggadmin.dto.AdminUserDetails;
+import ggadmin.dto.ums.AdminUserDetails;
 import ggadmin.model.ums.Admin;
 import ggadmin.model.ums.Resource;
 import ggadmin.security.component.DynamicSecurityService;
-import ggadmin.security.component.RestfulAccessDeniedHandler;
 import ggadmin.security.config.SecurityConfig;
 import ggadmin.service.ums.AdminService;
 import ggadmin.service.ums.ResourceService;

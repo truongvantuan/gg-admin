@@ -1,7 +1,5 @@
 package ggadmin.service.ums.impl;
 
-import ggadmin.dto.AdminInfo;
-import ggadmin.dto.AdminInfoDTO;
 import ggadmin.model.ums.Resource;
 import ggadmin.service.ums.AdminService;
 import org.junit.jupiter.api.Test;

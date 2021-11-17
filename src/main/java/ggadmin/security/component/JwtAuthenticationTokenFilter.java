@@ -47,14 +47,14 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith(tokenHead)) { // kiểm tra RequestHeader chứa token Bearer
             String authToken = authHeader.substring(tokenHead.length()); // trích xuất Token từ authHeader
             String username = jwtTokenUtil.getUserFromToken(authToken); // trích xuất username từ Token
-            LOGGER.info("Đang kiểm tra username: {}", username);
+            LOGGER.info("Đang kiểm tra : {}", username);
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
                 if (jwtTokenUtil.validateToken(authToken, userDetails)) {
                     UsernamePasswordAuthenticationToken authenticationToken =
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    LOGGER.info("Đã xác thực username: {}", username);
+                    LOGGER.info("Xác thực thành công: {}", username);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
             }

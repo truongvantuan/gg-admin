@@ -1,9 +1,9 @@
 package ggadmin.service.ums.impl;
 
 import ggadmin.common.utils.JwtTokenUtil;
-import ggadmin.dto.AdminDTO;
-import ggadmin.dto.AdminInfoDTO;
-import ggadmin.dto.AdminUserDetails;
+import ggadmin.dto.ums.AdminDTO;
+import ggadmin.dto.ums.AdminInfoDTO;
+import ggadmin.dto.ums.AdminUserDetails;
 import ggadmin.exception.ums.AdminExistException;
 import ggadmin.model.ums.*;
 import ggadmin.repository.ums.*;
@@ -12,6 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -25,9 +28,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.security.Principal;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -74,14 +75,14 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Admin register(AdminDTO adminDto) {
-        if (adminRepository.getAdminByUsername(adminDto.getUsername()).isPresent()) {
-            throw new AdminExistException();
+    public Admin register(Admin admin) {
+        if (adminRepository.getAdminByUsername(admin.getUsername()).isPresent()) {
+            throw new AdminExistException("Người dùng đã được đăng ký!");
 //            throw new RuntimeException("Người dùng đã được đăng ký!");
         }
-        Admin admin = adminDto.toAdmin();
+//        Admin admin = adminDto.toAdmin();
         admin.setCreateTime(new Date());
-        admin.setStatus(1);
+//        admin.setStatus(1);
         String encodePassword = passwordEncoder.encode(admin.getPassword());
         admin.setPassword(encodePassword);
         return adminRepository.save(admin);
@@ -153,5 +154,79 @@ public class AdminServiceImpl implements AdminService {
                 .roles(roles)
                 .menus(menus)
                 .build();
+    }
+
+    @Override
+    public Page<Admin> getAdminPage(Integer pageNum, Integer pageSize) {
+        --pageNum; // JPA đếm trang từ 0, cần giảm thêm 1
+        Pageable paging = PageRequest.of(pageNum, pageSize);
+        Page<Admin> adminPage = adminRepository.findAll(paging);
+        adminPage.getContent();
+        return adminRepository.findAll(paging);
+    }
+
+    @Override
+    public Page<Admin> getAdminPage(Integer pageNum, Integer pageSize, String keyword) {
+        --pageNum;
+        Pageable paging = PageRequest.of(pageNum, pageSize);
+        return adminRepository.findAllByUsernameContainingIgnoreCase(keyword, paging);
+    }
+
+    @Override
+    public void delete(Long adminId) {
+        adminRepository.deleteById(adminId);
+    }
+
+    @Override
+    public boolean updateRole(Long adminId, List<Long> rolesIds) {
+        Admin admin = adminRepository.getById(adminId);
+        boolean check = true;
+        Set<Role> roleSet = new HashSet<>();
+        List<Role> roleList = rolesIds.stream()
+                .map(roleId -> roleRepository.getById(roleId))
+                .collect(Collectors.toList());
+        roleSet.addAll(roleList);
+        admin.setRoles(roleSet);
+        try {
+            adminRepository.save(admin);
+        } catch (Exception e) {
+            check = false;
+        }
+        return check;
+    }
+
+    @Override
+    public boolean update(Long adminId, AdminDTO adminDTO) {
+        Admin admin = adminRepository.getById(adminId);
+        // Kiểm tra người dùng đổi password không? Khác 60 ký tự đồng nghĩa đã đổ password
+        if (adminDTO.getPassword().length() != 60) { // password được băm thành string 60 ký tự
+            String encodePassword = passwordEncoder.encode(adminDTO.getPassword());
+            admin.setPassword(encodePassword);
+        }
+        admin.setUsername(adminDTO.getUsername());
+        admin.setNickName(adminDTO.getNickName());
+        admin.setEmail(adminDTO.getEmail());
+        admin.setNote(adminDTO.getNote());
+        admin.setStatus(adminDTO.getStatus());
+        boolean isSaved = true;
+        try {
+            adminRepository.save(admin);
+        } catch (Exception e) {
+            isSaved = false;
+        }
+        return isSaved;
+    }
+
+    @Override
+    public boolean updateStatus(Long adminId, Integer status) {
+        Admin adminToUpdate = adminRepository.getById(adminId);
+        adminToUpdate.setStatus(status);
+        boolean isSuccess = true;
+        try {
+            adminRepository.save(adminToUpdate);
+        } catch (Exception e) {
+            isSuccess = false;
+        }
+        return isSuccess;
     }
 }

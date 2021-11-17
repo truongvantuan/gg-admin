@@ -1,4 +1,4 @@
-package ggadmin.dto;
+package ggadmin.dto.ums;
 
 import lombok.Data;
 

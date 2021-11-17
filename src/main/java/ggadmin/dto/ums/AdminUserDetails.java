@@ -1,4 +1,4 @@
-package ggadmin.dto;
+package ggadmin.dto.ums;
 
 import ggadmin.model.ums.Admin;
 import ggadmin.model.ums.Resource;
