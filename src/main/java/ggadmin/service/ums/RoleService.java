@@ -1,9 +1,9 @@
 package ggadmin.service.ums;
 
 import ggadmin.dto.ums.RoleDTO;
+import ggadmin.model.ums.Menu;
 import ggadmin.model.ums.Role;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -20,4 +20,10 @@ public interface RoleService {
     boolean updateStatus(Long roleId, Integer roleStatus);
 
     boolean create(RoleDTO roleDTO);
+
+    boolean updateRole(Long roleId, RoleDTO roleDTO);
+
+    boolean delete(Long roleId);
+
+    List<Menu> getMenus(Long roleId);
 }

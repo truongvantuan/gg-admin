@@ -1,6 +1,7 @@
 package ggadmin.repository.ums;
 
 import ggadmin.model.ums.Admin;
+import ggadmin.model.ums.Menu;
 import ggadmin.model.ums.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

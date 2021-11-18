@@ -4,6 +4,7 @@ import ggadmin.common.api.CommonPage;
 import ggadmin.common.api.CommonResult;
 import ggadmin.dto.ums.RoleDTO;
 import ggadmin.dto.ums.mapper.RoleMapper;
+import ggadmin.model.ums.Menu;
 import ggadmin.model.ums.Role;
 import ggadmin.service.ums.RoleService;
 import io.swagger.annotations.ApiOperation;
@@ -63,6 +64,27 @@ public class RoleController {
         return roleService.create(roleDTO) ? CommonResult.success(null) : CommonResult.failed();
     }
 
+    @ApiOperation("Cập nhật thông tin Role")
+    @PostMapping("/update/{id}")
+    @ResponseBody
+    public ResponseEntity<?> updateRole(@PathVariable("id") Long roleId,
+                                        @RequestBody RoleDTO roleDTO) {
+        return roleService.updateRole(roleId, roleDTO) ? CommonResult.success(null) : CommonResult.failed();
+    }
 
+    @ApiOperation("Xóa Role")
+    @PostMapping("/delete")
+    @ResponseBody
+    public ResponseEntity<?> delete(@RequestParam("ids") Long roleId) {
+        return roleService.delete(roleId) ? CommonResult.success(null) : CommonResult.failed();
+    }
+
+    @ApiOperation("Lấy danh sách tất cả menus mà Role sở hữu")
+    @GetMapping("/listMenu/{id}")
+    @ResponseBody
+    public ResponseEntity<?> getMenus(@PathVariable("id") Long roleId) {
+        List<Menu> menuList = roleService.getMenus(roleId);
+        return CommonResult.success(menuList);
+    }
 
 }
