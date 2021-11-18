@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,10 +48,21 @@ public class RoleController {
         return CommonResult.success(roleDTOCommonPage);
     }
 
+    @ApiOperation("Cập nhật trạng thái kích hoạt của Role")
     @PostMapping("/updateStatus/{id}")
+    @ResponseBody
     public ResponseEntity<?> updateStatus(@PathVariable("id") Long roleId,
                                           @RequestParam("status") Integer status) {
         return roleService.updateStatus(roleId, status) ? CommonResult.success(null) : CommonResult.failed();
     }
+
+    @ApiOperation("Tạo mới Role")
+    @PostMapping("/create")
+    @ResponseBody
+    public ResponseEntity<?> createRole(@RequestBody RoleDTO roleDTO, BindingResult bindingResult) {
+        return roleService.create(roleDTO) ? CommonResult.success(null) : CommonResult.failed();
+    }
+
+
 
 }

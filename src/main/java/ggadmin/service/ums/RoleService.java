@@ -1,5 +1,6 @@
 package ggadmin.service.ums;
 
+import ggadmin.dto.ums.RoleDTO;
 import ggadmin.model.ums.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,4 +18,6 @@ public interface RoleService {
     Page<Role> getRolePage(String keyword, Integer pageNum, Integer pageSize);
 
     boolean updateStatus(Long roleId, Integer roleStatus);
+
+    boolean create(RoleDTO roleDTO);
 }
