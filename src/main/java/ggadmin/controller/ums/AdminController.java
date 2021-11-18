@@ -126,6 +126,7 @@ public class AdminController {
 
     @ApiOperation("Lấy role sở hữu bởi Admin theo adminId")
     @GetMapping("/role/{id}")
+    @ResponseBody
     public ResponseEntity<?> getRoleByAdmin(@PathVariable("id") Long adminId) {
         List<Role> roleList = roleService.getRolesByAdminId(adminId);
         List<RoleDTO> roleDtoList = roleList.stream()
@@ -134,6 +135,7 @@ public class AdminController {
         return CommonResult.success(roleDtoList);
     }
 
+    @ApiOperation("Xóa Admin theo id")
     @PostMapping("/delete/{id}")
     @ResponseBody
     public ResponseEntity<?> deleteAdmin(@PathVariable("id") Long adminId) {
@@ -141,6 +143,7 @@ public class AdminController {
         return CommonResult.success(null, "Delete successfully!");
     }
 
+    @ApiOperation("Cập nhật, gán role cho Admin")
     @PostMapping("role/update")
     @ResponseBody
     public ResponseEntity<?> allocRole(@RequestParam("adminId") Long adminId,
@@ -152,7 +155,9 @@ public class AdminController {
         return CommonResult.failed();
     }
 
+    @ApiOperation("Cập nhật thông tin Admin")
     @PostMapping("/update/{id}")
+    @ResponseBody
     public ResponseEntity<?> update(@PathVariable("id") Long adminId, @RequestBody AdminDTO adminDTO) {
         boolean isSuccess = adminService.update(adminId, adminDTO);
         if (!isSuccess) {
@@ -161,7 +166,9 @@ public class AdminController {
         return CommonResult.success("Update successfully!");
     }
 
+    @ApiOperation("Cập nhật trạng thái kích hoạt cho Admin")
     @PostMapping("/updateStatus/{id}")
+    @ResponseBody
     public ResponseEntity<?> updateAdminStatus(@PathVariable(value = "id") Long adminId,
                                                @RequestParam(value = "status") Integer status) {
         if (adminService.updateStatus(adminId, status)) {

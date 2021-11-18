@@ -1,5 +1,7 @@
 package ggadmin.service.ums.impl;
 
+import ggadmin.dto.ums.RoleDTO;
+import ggadmin.dto.ums.mapper.RoleMapper;
 import ggadmin.model.ums.Admin;
 import ggadmin.model.ums.Role;
 import ggadmin.repository.ums.AdminRepository;
@@ -55,6 +57,18 @@ public class RoleServiceImpl implements RoleService {
         try {
             roleRepository.save(roleToUpdate);
         } catch (Exception e) {
+            isSuccess = false;
+        }
+        return isSuccess;
+    }
+
+    @Override
+    public boolean create(RoleDTO roleDTO) {
+        Role roleToAdd = RoleMapper.INSTANCE.toRoleEntity(roleDTO);
+        boolean isSuccess = true;
+        try {
+            roleRepository.save(roleToAdd);
+        } catch (RuntimeException e) {
             isSuccess = false;
         }
         return isSuccess;
