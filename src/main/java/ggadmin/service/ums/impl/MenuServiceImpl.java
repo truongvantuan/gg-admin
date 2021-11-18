@@ -19,19 +19,19 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<Menu> getRootMenu() {
-        return menuRepository.getAllByParentMenuIdIs(0L);
+        return menuRepository.getAllByParentIdIs(0L);
     }
 
     @Override
     public List<Menu> getMenuTree() {
-        return menuRepository.getAllByParentMenuIdIs(0L);
+        return menuRepository.getAllByParentIdIs(0L);
     }
 
     @Override
     public Page<Menu> getRootMenuPage(Integer pageNum, Integer pageSize) {
         --pageNum;
         Pageable paging = PageRequest.of(pageNum, pageSize);
-        Page<Menu> menuPage = menuRepository.getAllByParentMenuIdIs(0L, paging);
+        Page<Menu> menuPage = menuRepository.getAllByParentIdIs(0L, paging);
         return menuPage;
     }
 
@@ -39,7 +39,26 @@ public class MenuServiceImpl implements MenuService {
     public Page<Menu> getMenuPage(Long rootMenuId, Integer pageNum, Integer pageSize) {
         --pageNum;
         Pageable paging = PageRequest.of(pageNum, pageSize);
-        Page<Menu> menuPage = menuRepository.getAllByParentMenuIdIs(rootMenuId, paging);
+        Page<Menu> menuPage = menuRepository.getAllByParentIdIs(rootMenuId, paging);
         return menuPage;
+    }
+
+    @Override
+    public boolean updateHiddenStatus(Long menuId, Integer hiddenStatus) {
+        Menu menu = menuRepository.getById(menuId);
+        menu.setHidden(hiddenStatus);
+        boolean isUpdated = true;
+        try {
+            menuRepository.save(menu);
+        } catch (RuntimeException e) {
+            isUpdated = false;
+        }
+        return isUpdated;
+    }
+
+    @Override
+    public Menu getMenu(Long menuId) {
+        Menu menu = menuRepository.findById(menuId).get();
+        return menu;
     }
 }

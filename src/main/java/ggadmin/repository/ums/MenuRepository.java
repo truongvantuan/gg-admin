@@ -13,8 +13,8 @@ public interface MenuRepository extends JpaRepository<Menu, Long>, JpaSpecificat
 
     List<Menu> getAllByRolesIn(List<Role> role);
 
-    List<Menu> getAllByParentMenuIdIs(Long parentId);
+    List<Menu> getAllByParentIdIs(Long parentId);
 
-    Page<Menu> getAllByParentMenuIdIs(Long parentId, Pageable pageable);
+    Page<Menu> getAllByParentIdIs(Long parentId, Pageable pageable);
 
 }

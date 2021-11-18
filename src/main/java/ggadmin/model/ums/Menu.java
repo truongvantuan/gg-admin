@@ -29,7 +29,7 @@ public class Menu implements Serializable {
     private Long id;
 
     @Column(name = "parent_id")
-    private Long parentMenuId;
+    private Long parentId;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time")
@@ -52,10 +52,6 @@ public class Menu implements Serializable {
 
     @Column(name = "hidden")
     private Integer hidden;
-
-//    @ManyToOne
-//    @JoinColumn(name = "parent_id")
-//    private Menu parentMenu;
 
     @ManyToMany(mappedBy = "menus")
     @JsonIgnore

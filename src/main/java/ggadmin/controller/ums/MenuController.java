@@ -27,7 +27,15 @@ public class MenuController {
         return null;
     }
 
-    @ApiOperation("Lấy về danh sách menu gốc")
+    @ApiOperation("Lấy về menu theo id")
+    @GetMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity<?> getMenu(@PathVariable("id") Long menuId) {
+        Menu menu = menuService.getMenu(menuId);
+        return CommonResult.success(menu);
+    }
+
+    @ApiOperation("Lấy về danh sách root menu (menu cấp 1)")
     @GetMapping("/list/0")
     @ResponseBody
     public ResponseEntity<?> getRootMenu(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
@@ -44,5 +52,12 @@ public class MenuController {
         Page<Menu> menuPage = menuService.getMenuPage(rootMenuId, pageNum, pageSize);
         CommonPage<Menu> menuCommonPage = CommonPage.restPage(menuPage);
         return CommonResult.success(menuCommonPage);
+    }
+
+    @ApiOperation("Cập nhật trạng thái kích hoạt Menu")
+    @PostMapping("/updateHidden/{id}")
+    public ResponseEntity<?> updateHidden(@PathVariable("id") Long menuId,
+                                          @RequestParam("hidden") Integer status) {
+        return menuService.updateHiddenStatus(menuId, status) ? CommonResult.success(null) : CommonResult.failed();
     }
 }
