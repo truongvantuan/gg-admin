@@ -4,6 +4,7 @@ import ggadmin.common.utils.JwtTokenUtil;
 import ggadmin.dto.ums.AdminDTO;
 import ggadmin.dto.ums.AdminInfoDTO;
 import ggadmin.dto.ums.AdminUserDetails;
+import ggadmin.dto.ums.mapper.AdminMapper;
 import ggadmin.exception.ums.AdminExistException;
 import ggadmin.model.ums.*;
 import ggadmin.repository.ums.*;
@@ -75,6 +76,20 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public Admin register(AdminDTO adminDTO) {
+        if (adminRepository.getAdminByUsername(adminDTO.getUsername()).isPresent()) {
+            throw new AdminExistException("Người dùng đã được đăng ký!");
+//            throw new RuntimeException("Người dùng đã được đăng ký!");
+        }
+        Admin admin = AdminMapper.INSTANCE.toAdminEntity(adminDTO);
+//        admin.setCreateTime(new Date());
+//        admin.setStatus(1);
+        String encodePassword = passwordEncoder.encode(admin.getPassword());
+        admin.setPassword(encodePassword);
+        return adminRepository.save(admin);
+    }
+
+/*    @Override
     public Admin register(Admin admin) {
         if (adminRepository.getAdminByUsername(admin.getUsername()).isPresent()) {
             throw new AdminExistException("Người dùng đã được đăng ký!");
@@ -86,7 +101,7 @@ public class AdminServiceImpl implements AdminService {
         String encodePassword = passwordEncoder.encode(admin.getPassword());
         admin.setPassword(encodePassword);
         return adminRepository.save(admin);
-    }
+    }*/
 
     @Override
     @Transactional

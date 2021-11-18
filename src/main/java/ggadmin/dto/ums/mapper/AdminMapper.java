@@ -11,4 +11,9 @@ public interface AdminMapper {
     AdminMapper INSTANCE = Mappers.getMapper(AdminMapper.class);
 
     AdminDTO toAdminDto(Admin admin);
+
+    // TODO nghiên cứu mapping password sang entity
+    @ToAdminEntity
+//    @Mapping(target = "password", expression = "java(new ggadmin.common.utils.PasswordUtil.encode(adminDTO.getPassword()))")
+    Admin toAdminEntity(AdminDTO adminDTO);
 }

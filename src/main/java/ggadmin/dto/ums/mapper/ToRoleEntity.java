@@ -11,7 +11,11 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention(RetentionPolicy.CLASS)
 @Mapping(target = "id", ignore = true) // Bỏ qua thuộc tính id gửi từ client
-@Mapping(target = "createTime", expression = "java(new java.util.Date())") // Tạo mốc thời điểm hiện tại cho thuộc tính createTime phía Role entity
+@Mapping(target = "admins", ignore = true)
+@Mapping(target = "menus", ignore = true)
+@Mapping(target = "resources", ignore = true)
+// Tạo mốc thời điểm hiện tại cho thuộc tính createTime phía Role entity
+@Mapping(target = "createTime", expression = "java(new java.util.Date())")
 @Mapping(target = "sort", defaultValue = "0") // Mặc định giá trị thuộc tính sort là 0
 public @interface ToRoleEntity {
 }

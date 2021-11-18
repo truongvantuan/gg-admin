@@ -54,13 +54,25 @@ public class AdminController {
     @PostMapping("/register")
     @ResponseBody
     public ResponseEntity<?> register(@RequestBody
+                                      @Valid AdminDTO adminDTO, BindingResult bindingResult) {
+        Admin adminAdded = adminService.register(adminDTO);
+        if (adminAdded == null) {
+            return CommonResult.failed();
+        }
+        return CommonResult.success(adminAdded, "Registry account successfully!");
+    }
+
+/*    @ApiOperation(value = "Đăng ký tài khoản admin")
+    @PostMapping("/register")
+    @ResponseBody
+    public ResponseEntity<?> register(@RequestBody
                                       @Valid Admin admin, BindingResult bindingResult) {
         Admin adminAdded = adminService.register(admin);
         if (adminAdded == null) {
             return CommonResult.failed();
         }
         return CommonResult.success(adminAdded, "Registry account successfully!");
-    }
+    }*/
 
     @ApiOperation(value = "Đăng nhập tài khoản admin dùng username/password")
     @PostMapping("/login")

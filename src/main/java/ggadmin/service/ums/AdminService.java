@@ -16,7 +16,8 @@ public interface AdminService extends UserDetailsService {
 
     Optional<Admin> getAdminByUsername(String username);
 
-    Admin register(Admin admin); // đăng ký tài khoản admin
+    //    Admin register(Admin admin); // đăng ký tài khoản admin
+    Admin register(AdminDTO adminDTO); // đăng ký tài khoản admin
 
     String login(String username, String password); // đăng nhập admin với username/password
 
