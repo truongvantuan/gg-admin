@@ -14,4 +14,8 @@ public interface MenuService {
     Page<Menu> getRootMenuPage(Integer pageNum, Integer pageSize);
 
     Page<Menu> getMenuPage(Long rootMenuId, Integer pageNum, Integer pageSize);
+
+    boolean updateHiddenStatus(Long menuId, Integer hiddenStatus);
+
+    Menu getMenu(Long menuId);
 }
