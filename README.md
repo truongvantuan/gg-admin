@@ -1,4 +1,4 @@
-# gg-admin
+# gg-admin (đồ án đang trong quá trình hoàn thiện)
 gg-admin | đồ án kết thúc khóa học Java Spring Boot
 - Chạy ứng dụng, yêu cầu docker, docker-compose.
 ```shell script
