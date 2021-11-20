@@ -4,8 +4,8 @@ services:
 
   client:
     container_name: ggadmin-client
-    build: ./client-app
-#    image: ggadmin-client:local
+#    build: ./client-app
+    image: truongvantuan/ggadmin-client:latest
     ports:
       - "8088:80"
     expose:
