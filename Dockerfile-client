@@ -1,5 +1,0 @@
-FROM nginx
-ARG CLIENT=client-app/*.tar.gz
-ARG NGINX_DIR=/usr/share/nginx/
-COPY ${CLIENT} ${NGINX_DIR}
-RUN cd ${NGINX_DIR} && tar -zxvf *.tar.gz && rm -rf html && mv dist html
