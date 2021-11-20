@@ -18,4 +18,8 @@ public interface MenuService {
     boolean updateHiddenStatus(Long menuId, Integer hiddenStatus);
 
     Menu getMenu(Long menuId);
+
+    boolean delete(Long menuId);
+
+    void createMenu(Menu menu);
 }
