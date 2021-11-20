@@ -1,0 +1,48 @@
+version: '3.3'
+
+services:
+
+  client:
+    container_name: ggadmin-client
+    build: ./client-app
+    #    image: truongvantuan/ggadmin-client:latest
+    ports:
+      - "8088:80"
+    expose:
+      - "8088"
+    environment:
+      - NGINX_PORT=80
+    depends_on:
+      - api
+    networks:
+      - gg-network
+
+  api:
+    container_name: ggadmin-api
+    image: truongvantuan/ggadmin-api:latest
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ggadmin-db:5432/gg
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - gg-network
+
+  db:
+    container_name: ggadmin-db
+    image: postgres
+    env_file:
+      - database.env
+    volumes:
+      - ./script/database:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    networks:
+      - gg-network
+
+networks:
+  gg-network:
+
+
+
