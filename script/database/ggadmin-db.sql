@@ -1816,10 +1816,10 @@ COPY pms.weight_template (id, name, charge_type, first_weight, first_fee, contin
 --
 
 COPY ums.admin (id, username, password, icon, email, nick_name, note, create_time, login_time, status) FROM stdin;
+3	admin	$2a$10$3EL1xHcu8C.lI2CrGzQg3uL1RL4gNlwWnbh3mnrc6z7a.idKV925O	https://truongvantuan.github.io/authors/admin/avatar_hub0a1e9522a4d07747dfd7aa3fe185e02_516061_270x270_fill_lanczos_center_3.png	admin@email.com	System administrator	System administrator	2021-11-15 13:32:47	2021-11-21 07:31:38.309	1
 87	thuylinh	$2a$10$XtIdaJ7k1cJ0apwzlgOqPeDrEWH1rgxJxtdu0CB6F0yp8Y4Aa82dG	\N	thuylingdy@mail.com	Product/Order manager	Quản lý sản phẩm	2021-11-18 08:12:48.848	2021-11-18 08:13:46.688	1
 79	truongtuan	$2a$10$Q56HoueNAkMLUz4DhAaTTOFKkvE/UXBPKYMKwWvBruGnNmLZ3ff8G	\N	truongvantuan@outlook.com.vn	Java Developer	Super adminitrator	2021-11-17 17:02:04.08	2021-11-20 07:47:25.079	1
 90	adminsystem	$2a$10$WO1A3p1nKW8XLViezhy2henHiQs5j8k.hL7MLRuKR0etpp5uKOlu6	\N	admin@gmail.com	admin system	admin system	2021-11-18 08:15:24.345	\N	1
-3	admin	$2a$10$6mui1BKUGRwETB87ojblwOH.k/TGkoQ9GpGmbAj.AlccPzsjbMiuu	https://truongvantuan.github.io/authors/admin/avatar_hub0a1e9522a4d07747dfd7aa3fe185e02_516061_270x270_fill_lanczos_center_3.png	admin@email.com	System administrator	System administrator	2021-11-15 13:32:47	2021-11-20 21:20:09.578	1
 7	orderAdmin	$2a$10$UqEhA9UZXjHHA3B.L9wNG.6aerrBjC6WHTtbv1FdvYPUI.7lkL6E.	\N	order@email.com	Order manager	Only order management authority	2021-11-15 16:15:50	2021-11-16 15:53:16.424	1
 4	macro	$2a$10$Bx4jZPR7GhEpIQfefDQtVeS58GfT5n6mxs/b4nLLK65eMFa16topa	string	macro@email.com	macro	macro dedicated	2021-11-15 15:53:51	2021-11-14 20:00:35.638	1
 6	productAdmin	$2a$10$6/.J.p.6Bhn7ic4GfoB5D.pGd7xSiD1a9M6ht6yO0fxzlKJPjRAGm	\N	product@email.com	Product manager	Only product permissions	2021-11-15 16:15:08	2021-11-16 15:57:08.202	1
@@ -1926,6 +1926,9 @@ COPY ums.admin_login_log (id, admin_id, create_time, ip, address, user_agent) FR
 122	3	2021-11-20 21:19:30.71	127.0.0.1	127.0.0.1	Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0
 123	3	2021-11-20 21:20:00.336	127.0.0.1	127.0.0.1	Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0
 124	3	2021-11-20 21:20:09.6	127.0.0.1	127.0.0.1	Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0
+125	3	2021-11-21 07:30:25.119	127.0.0.1	127.0.0.1	Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0
+126	3	2021-11-21 07:30:58.015	127.0.0.1	127.0.0.1	Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0
+127	3	2021-11-21 07:31:38.319	0:0:0:0:0:0:0:1	0:0:0:0:0:0:0:1	insomnia/2021.6.0
 \.
 
 
@@ -2287,7 +2290,7 @@ SELECT pg_catalog.setval('pms.weight_template_id_seq', 1, false);
 -- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: truongtuan
 --
 
-SELECT pg_catalog.setval('public.hibernate_sequence', 124, true);
+SELECT pg_catalog.setval('public.hibernate_sequence', 127, true);
 
 
 --

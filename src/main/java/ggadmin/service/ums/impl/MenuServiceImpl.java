@@ -72,4 +72,9 @@ public class MenuServiceImpl implements MenuService {
         }
         return isSuccess;
     }
+
+    @Override
+    public void createMenu(Menu menu) {
+
+    }
 }
