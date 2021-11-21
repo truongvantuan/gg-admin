@@ -61,4 +61,15 @@ public class MenuServiceImpl implements MenuService {
         Menu menu = menuRepository.findById(menuId).get();
         return menu;
     }
+
+    @Override
+    public boolean delete(Long menuId) {
+        boolean isSuccess = true;
+        try {
+            menuRepository.deleteById(menuId);
+        } catch (RuntimeException e) {
+            isSuccess = false;
+        }
+        return isSuccess;
+    }
 }

@@ -20,6 +20,14 @@ public class MenuController {
     @Autowired
     private MenuService menuService;
 
+    @ApiOperation("Tạo mới menu")
+    @PostMapping("/create")
+    @ResponseBody
+    public ResponseEntity<?> createMenu(@RequestBody Menu menu) {
+        menuService.createMenu(menu);
+        return null;
+    }
+
     @ApiOperation("Lấy toàn bộ menu theo cấu trúc tree")
     @GetMapping("/treeList")
     @ResponseBody
@@ -60,4 +68,12 @@ public class MenuController {
                                           @RequestParam("hidden") Integer status) {
         return menuService.updateHiddenStatus(menuId, status) ? CommonResult.success(null) : CommonResult.failed();
     }
+
+    @ApiOperation("Xóa menu theo id")
+    @PostMapping("/delete/{id}")
+    @ResponseBody
+    public ResponseEntity<?> deleteMenu(@PathVariable("id") Long menuId) {
+        return menuService.delete(menuId) ? CommonResult.success(null) : CommonResult.failed();
+    }
+
 }
