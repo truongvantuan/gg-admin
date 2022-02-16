@@ -8,7 +8,7 @@ git clone https://github.com/truongvantuan/gg-admin.git
 ```shell script
 docker-compose up 
 ```
-- Đăng nhập bằng tài khoản admin/admin123
+- Đăng nhập bằng tài khoản admin/admin123456
 ![login](images/login.png)
 - Thiết lập menu
 ![menu](images/menu.png)
