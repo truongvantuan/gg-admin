@@ -9,6 +9,6 @@ git clone https://github.com/truongvantuan/gg-admin.git
 docker-compose up 
 ```
 - Đăng nhập bằng tài khoản admin/admin123
-![login](images/login.png)
+![login](etc/images/login.png)
 - Thiết lập menu
-![menu](images/menu.png)
+![menu](etc/images/menu.png)
